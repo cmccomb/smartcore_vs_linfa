@@ -67,5 +67,5 @@ pub fn fibonacci2(n: u64) {
     );
 
     let lin_reg = LinfaLinearRegression::new();
-    let model = lin_reg.fit(&dataset);
+    let model = lin_reg.fit(&dataset).unwrap();
 }
