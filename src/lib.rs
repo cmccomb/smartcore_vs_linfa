@@ -1,13 +1,13 @@
+use linfa::{traits::Fit, Dataset};
+use linfa_linear::LinearRegression as LinfaLinearRegression;
+use ndarray::{arr1, arr2};
 use smartcore::{
     linalg::naive::dense_matrix::DenseMatrix,
     linear::linear_regression::{
         LinearRegression as SCLinearRegression, LinearRegressionParameters,
     },
 };
-
-use linfa::{traits::Fit, Dataset};
-use linfa_linear::LinearRegression as LinfaLinearRegression;
-use ndarray::{arr1, arr2};
+use std::error::Error;
 
 pub fn smartcore_linear_regression(n: u64) {
     let x = DenseMatrix::from_2d_array(&[
@@ -37,7 +37,7 @@ pub fn smartcore_linear_regression(n: u64) {
     let lr = SCLinearRegression::fit(&x, &y, LinearRegressionParameters::default()).unwrap();
 }
 
-pub fn linfa_linear_regression(n: u64) {
+pub fn linfa_linear_regression(n: u64) -> Result<(), Box<dyn Error>> {
     // load Diabetes dataset
     let dataset = Dataset::new(
         arr2(&[
@@ -65,5 +65,7 @@ pub fn linfa_linear_regression(n: u64) {
     );
 
     let lin_reg = LinfaLinearRegression::new();
-    let model = lin_reg.fit(&dataset).unwrap();
+    let model = lin_reg.fit(&dataset)?;
+
+    Ok(())
 }
