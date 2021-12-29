@@ -17,4 +17,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run benchmarks
-      run: cargo bench --verbose --release
+      run: cargo bench --verbose
