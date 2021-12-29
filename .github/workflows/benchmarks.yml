@@ -15,10 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install OpenBLAS
-      run: sudo apt-get install libopenblas-dev
     - uses: actions/checkout@v2
-    - name: Run build
-      run: cargo build --verbose
     - name: Run benchmarks
-      run: cargo bench --verbose
+      run: cargo bench --verbose --release

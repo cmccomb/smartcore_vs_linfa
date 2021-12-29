@@ -9,7 +9,7 @@ use linfa::{traits::Fit, Dataset};
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use ndarray::{arr1, arr2};
 
-pub fn fibonacci1(n: u64) {
+pub fn smartcore_linear_regression(n: u64) {
     let x = DenseMatrix::from_2d_array(&[
         &[234.289, 235.6, 159.0, 107.608, 1947., 60.323],
         &[259.426, 232.5, 145.6, 108.632, 1948., 61.122],
@@ -35,11 +35,9 @@ pub fn fibonacci1(n: u64) {
     ];
 
     let lr = SCLinearRegression::fit(&x, &y, LinearRegressionParameters::default()).unwrap();
-
-    let y_hat = lr.predict(&x).unwrap();
 }
 
-pub fn fibonacci2(n: u64) {
+pub fn linfa_linear_regression(n: u64) {
     // load Diabetes dataset
     let dataset = Dataset::new(
         arr2(&[

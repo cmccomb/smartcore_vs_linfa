@@ -462,7 +462,6 @@ checksum = "7496612871c85de124d12006109360ed7ffc4740ce3fe3fe35a749e2d7f2f88f"
 dependencies = [
  "approx 0.4.0",
  "ndarray",
- "ndarray-linalg",
  "num-traits",
  "openblas-src",
  "rand 0.8.4",
