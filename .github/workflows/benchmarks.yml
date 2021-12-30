@@ -18,8 +18,8 @@ jobs:
         run: sudo apt-get install libopenblas-dev gfortran
       - name: Run tests
         run: cargo bench --verbose
-#      - name: Zip report
-#        run: sudo apt-get install zip; zip -r bench.zip target/criterion
+      - name: Zip report
+        run: sudo apt-get install zip; zip -r bench.zip target/criterion
 #      - name: Archive benchmark results
 #        uses: actions/upload-artifact@v2
 #        with:
