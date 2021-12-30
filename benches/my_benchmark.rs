@@ -17,10 +17,17 @@ fn linear_regression_benchmark(c: &mut Criterion) {
 fn logistic_regression_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Logistic Regression");
     bm.bench_function("Smartcore", |b| {
-        b.iter(|| smartcore_vs_linfa::smartcore_logistic_regression(black_box(20)))
+        let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data();
+        b.iter(|| {
+            smartcore_vs_linfa::smartcore_logistic_regression(
+                black_box(&x),
+                black_box(&(y.iter().map(|&elem| elem as f64).collect())),
+            )
+        })
     });
     bm.bench_function("Linfa", |b| {
-        b.iter(|| smartcore_vs_linfa::linfa_logistic_regression(black_box(20)))
+        let dataset = smartcore_vs_linfa::get_linfa_classification_data();
+        b.iter(|| smartcore_vs_linfa::linfa_logistic_regression(black_box(&dataset)))
     });
 }
 
