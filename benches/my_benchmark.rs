@@ -4,10 +4,12 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 fn linear_regression_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Linear Regression");
     bm.bench_function("Smartcore", |b| {
-        b.iter(|| smartcore_vs_linfa::smartcore_linear_regression(black_box(20)))
+        let (x, y) = smartcore_vs_linfa::get_smartcore_regression_data();
+        b.iter(|| smartcore_vs_linfa::smartcore_linear_regression(black_box(&x), black_box(&y)))
     });
     bm.bench_function("Linfa", |b| {
-        b.iter(|| smartcore_vs_linfa::linfa_linear_regression(black_box(20)))
+        let dataset = smartcore_vs_linfa::get_linfa_regression_data();
+        b.iter(|| smartcore_vs_linfa::linfa_linear_regression(black_box(&dataset)))
     });
 }
 

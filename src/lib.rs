@@ -1,24 +1,20 @@
-// use linfa::{traits::Fit, Dataset};
 use linfa::prelude::*;
 use linfa_clustering::KMeans as LinfaKMeans;
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
-use ndarray::array;
+use ndarray::{array, Array1, Array2};
 use rand_core::SeedableRng;
 use rand_isaac::Isaac64Rng;
 use smartcore::{
     cluster::kmeans::{KMeans as SCKMeans, KMeansParameters},
     linalg::naive::dense_matrix::DenseMatrix,
     linear::{
-        linear_regression::{LinearRegression as SCLinearRegression, LinearRegressionParameters},
-        logistic_regression::{
-            LogisticRegression as SCLogisticRegression, LogisticRegressionParameters,
-        },
+        linear_regression::LinearRegression as SCLinearRegression,
+        logistic_regression::LogisticRegression as SCLogisticRegression,
     },
 };
-use std::error::Error;
 
-pub fn smartcore_linear_regression(_n: u64) {
+pub fn get_smartcore_regression_data() -> (DenseMatrix<f64>, Vec<f64>) {
     let x = DenseMatrix::from_2d_array(&[
         &[234.289, 235.6, 159.0, 107.608, 1947., 60.323],
         &[259.426, 232.5, 145.6, 108.632, 1948., 61.122],
@@ -43,12 +39,15 @@ pub fn smartcore_linear_regression(_n: u64) {
         115.7, 116.9,
     ];
 
-    let _lr = SCLinearRegression::fit(&x, &y, LinearRegressionParameters::default()).unwrap();
+    (x, y)
 }
 
-pub fn linfa_linear_regression(_n: u64) {
-    // load Diabetes dataset
-    let dataset = Dataset::new(
+pub fn smartcore_linear_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
+    let _model = SCLinearRegression::fit(x, y, Default::default()).unwrap();
+}
+
+pub fn get_linfa_regression_data() -> DataSetBase<Array2<f64>, Array1<f64>> {
+    Dataset::new(
         array![
             [234.289, 235.6, 159.0, 107.608, 1947., 60.323],
             [259.426, 232.5, 145.6, 108.632, 1948., 61.122],
@@ -71,10 +70,11 @@ pub fn linfa_linear_regression(_n: u64) {
             83.0, 88.5, 88.2, 89.5, 96.2, 98.1, 99.0, 100.0, 101.2, 104.6, 108.4, 110.8, 112.6,
             114.2, 115.7, 116.9,
         ],
-    );
+    )
+}
 
-    let lin_reg = LinfaLinearRegression::new();
-    let _model = lin_reg.fit(&dataset).unwrap();
+pub fn linfa_linear_regression(dataset: &DataSetBase<Array2<f64>, Array1<f64>>) {
+    let _model = LinfaLinearRegression::new().fit(dataset).unwrap();
 }
 
 pub fn smartcore_logistic_regression(_n: u64) {
