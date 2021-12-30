@@ -133,7 +133,7 @@ pub fn linfa_logistic_regression(_n: u64) {
             [6.6, 2.9, 4.6, 1.3],
             [5.2, 2.7, 3.9, 1.4],
         ],
-        array![0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,],
+        array![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
     );
 
     let _lin_reg = LinfaLogisticRegression::default()
