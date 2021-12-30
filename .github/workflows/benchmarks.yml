@@ -25,6 +25,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
       - name: commit
-        run:
+        run: |
           git commit -m "New benchmark results"
           git push
