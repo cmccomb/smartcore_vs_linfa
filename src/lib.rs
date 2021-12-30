@@ -168,8 +168,7 @@ pub fn linfa_kmeans(_n: u64) {
     ]);
     let mut rng = Isaac64Rng::seed_from_u64(42);
     let _model = LinfaKMeans::params_with_rng(2, rng)
-        .tolerance(1e-10)
-        .max_n_iterations(100)
+        .max_n_iterations(10)
         .n_runs(1)
         .fit(&observations)
         .expect("KMeans fitted");
@@ -199,5 +198,5 @@ pub fn smartcore_kmeans(_n: u64) {
     ]);
 
     let _kmeans =
-        SCKMeans::fit(&x, KMeansParameters::default().with_k(2).with_max_iter(100)).unwrap();
+        SCKMeans::fit(&x, KMeansParameters::default().with_k(2).with_max_iter(10)).unwrap();
 }

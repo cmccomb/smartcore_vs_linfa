@@ -10,10 +10,23 @@ While `linfa` requires a BLAS/LAPACK backend (either `openblas`, `netblas`, or `
 ## Results
 ### Linear Regression
 _No customization to equate algorithms._
+
 ![](criterion/Linear%20Regression/report/violin.svg)
 
 ### Logistic Regression
+
+The `smartcore` implementation has no parameters, but the `linfa` settings were modified to align it with `smartcore` defaults:
+
+- Gradient tolerance set to `1e-8`
+- Maximum number of iterations set to `1000`
+
 ![](criterion/Logistic%20Regression/report/violin.svg)
 
 ### K-Means Clustering
+
+Since the two implementations use different convergence criteria, the number of max iterations was equated at a low value, and only 1 run of the `linfa` algorithm was permitted:
+
+- Max iterations set to `10`
+- Number of runs set to `1`
+
 ![](criterion/K-Means%20Clustering/report/violin.svg)
