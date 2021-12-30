@@ -37,7 +37,7 @@ pub fn smartcore_linear_regression(n: u64) {
     let lr = SCLinearRegression::fit(&x, &y, LinearRegressionParameters::default()).unwrap();
 }
 
-pub fn linfa_linear_regression(n: u64) {
+pub fn linfa_linear_regression(n: u64)  {
     // load Diabetes dataset
     let dataset = Dataset::new(
         arr2(&[
@@ -65,5 +65,5 @@ pub fn linfa_linear_regression(n: u64) {
     );
 
     let lin_reg = LinfaLinearRegression::new();
-    let model = lin_reg.fit(&dataset)?;
+    let model = lin_reg.fit(&dataset).unwrap();
 }
