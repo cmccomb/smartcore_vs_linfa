@@ -3,6 +3,7 @@ use linfa_clustering::KMeans as LinfaKMeans;
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
 use ndarray::array;
+use ndarray_rand::rand::SeedableRng;
 use rand_isaac::Isaac64Rng;
 use smartcore::{
     cluster::kmeans::{KMeans as SCKMeans, KMeansParameters},
