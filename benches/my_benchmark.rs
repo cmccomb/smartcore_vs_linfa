@@ -4,11 +4,13 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 fn linear_regression_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Linear Regression");
     bm.bench_function("Smartcore", |b| {
-        let (x, y) = smartcore_vs_linfa::get_smartcore_regression_data();
+        let (x, y) =
+            smartcore_vs_linfa::get_smartcore_regression_data(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::smartcore_linear_regression(black_box(&x), black_box(&y)))
     });
     bm.bench_function("Linfa", |b| {
-        let dataset = smartcore_vs_linfa::get_linfa_regression_data();
+        let dataset =
+            smartcore_vs_linfa::get_linfa_regression_data(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::linfa_linear_regression(black_box(&dataset)))
     });
 }
@@ -17,7 +19,9 @@ fn linear_regression_benchmark(c: &mut Criterion) {
 fn logistic_regression_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Logistic Regression");
     bm.bench_function("Smartcore", |b| {
-        let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data();
+        let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(
+            &smartcore_vs_linfa::TestSize::Small,
+        );
         b.iter(|| {
             smartcore_vs_linfa::smartcore_logistic_regression(
                 black_box(&x),
@@ -26,7 +30,8 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
         })
     });
     bm.bench_function("Linfa", |b| {
-        let dataset = smartcore_vs_linfa::get_linfa_classification_data();
+        let dataset =
+            smartcore_vs_linfa::get_linfa_classification_data(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::linfa_logistic_regression(black_box(&dataset)))
     });
 }
@@ -35,11 +40,13 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
 fn kmeans_clustering_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("K-Means Clustering");
     bm.bench_function("Smartcore", |b| {
-        let x = smartcore_vs_linfa::get_smartcore_clustering_data();
+        let x =
+            smartcore_vs_linfa::get_smartcore_clustering_data(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::smartcore_kmeans(black_box(&x)))
     });
     bm.bench_function("Linfa", |b| {
-        let dataset = smartcore_vs_linfa::get_linfa_clustering_data();
+        let dataset =
+            smartcore_vs_linfa::get_linfa_clustering_data(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::linfa_kmeans(black_box(&dataset)))
     });
 }

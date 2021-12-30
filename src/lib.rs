@@ -12,7 +12,13 @@ use smartcore::{
     },
 };
 
-pub fn x_regression() -> Array2<f64> {
+pub enum TestSize {
+    Small,
+    Medium,
+    Large,
+}
+
+pub fn x_regression(_size: &TestSize) -> Array2<f64> {
     array![
         [234.289, 235.6, 159.0, 107.608, 1947., 60.323],
         [259.426, 232.5, 145.6, 108.632, 1948., 61.122],
@@ -34,18 +40,18 @@ pub fn x_regression() -> Array2<f64> {
     .to_owned()
 }
 
-pub fn y_regression() -> Array1<f64> {
+pub fn y_regression(_size: &TestSize) -> Array1<f64> {
     array![
         83.0, 88.5, 88.2, 89.5, 96.2, 98.1, 99.0, 100.0, 101.2, 104.6, 108.4, 110.8, 112.6, 114.2,
         115.7, 116.9,
     ]
 }
 
-pub fn get_smartcore_regression_data() -> (DenseMatrix<f64>, Vec<f64>) {
-    let x = x_regression().to_owned();
+pub fn get_smartcore_regression_data(size: &TestSize) -> (DenseMatrix<f64>, Vec<f64>) {
+    let x = x_regression(size).to_owned();
     (
         DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap()),
-        y_regression().to_vec(),
+        y_regression(&size).to_vec(),
     )
 }
 
@@ -53,15 +59,15 @@ pub fn smartcore_linear_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
     let _model = SCLinearRegression::fit(x, y, Default::default()).unwrap();
 }
 
-pub fn get_linfa_regression_data() -> Dataset<f64, f64> {
-    Dataset::new(x_regression().to_owned(), y_regression())
+pub fn get_linfa_regression_data(size: &TestSize) -> Dataset<f64, f64> {
+    Dataset::new(x_regression(size).to_owned(), y_regression(size))
 }
 
 pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>) {
     let _model = LinfaLinearRegression::new().fit(dataset).unwrap();
 }
 
-pub fn x_classification() -> Array2<f64> {
+pub fn x_classification(_size: &TestSize) -> Array2<f64> {
     array![
         [5.1, 3.5, 1.4, 0.2],
         [4.9, 3.0, 1.4, 0.2],
@@ -87,20 +93,20 @@ pub fn x_classification() -> Array2<f64> {
     .to_owned()
 }
 
-pub fn y_classification() -> Array1<u64> {
+pub fn y_classification(_size: &TestSize) -> Array1<u64> {
     array![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]
 }
 
-pub fn get_smartcore_classification_data() -> (DenseMatrix<f64>, Vec<u64>) {
-    let x = x_classification().to_owned();
+pub fn get_smartcore_classification_data(size: &TestSize) -> (DenseMatrix<f64>, Vec<u64>) {
+    let x = x_classification(size).to_owned();
     (
         DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap()),
-        y_classification().to_vec(),
+        y_classification(size).to_vec(),
     )
 }
 
-pub fn get_linfa_classification_data() -> Dataset<f64, u64> {
-    Dataset::new(x_classification().to_owned(), y_classification())
+pub fn get_linfa_classification_data(size: &TestSize) -> Dataset<f64, u64> {
+    Dataset::new(x_classification(size).to_owned(), y_classification(size))
 }
 
 pub fn smartcore_logistic_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
@@ -115,7 +121,7 @@ pub fn linfa_logistic_regression(dataset: &Dataset<f64, u64>) {
         .unwrap();
 }
 
-pub fn x_clustering() -> Array2<f64> {
+pub fn x_clustering(_size: &TestSize) -> Array2<f64> {
     array![
         [5.1, 3.5, 1.4, 0.2],
         [4.9, 3.0, 1.4, 0.2],
@@ -141,22 +147,21 @@ pub fn x_clustering() -> Array2<f64> {
     .to_owned()
 }
 
-pub fn get_smartcore_clustering_data() -> DenseMatrix<f64> {
-    let x = x_classification().to_owned();
+pub fn get_smartcore_clustering_data(size: &TestSize) -> DenseMatrix<f64> {
+    let x = x_clustering(size).to_owned();
     DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap())
 }
 
-pub fn get_linfa_clustering_data() -> Dataset<f64, ()> {
-    Dataset::from(x_clustering().to_owned())
+pub fn get_linfa_clustering_data(size: &TestSize) -> Dataset<f64, ()> {
+    Dataset::from(x_clustering(size).to_owned())
 }
 
 pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
     let _model = LinfaKMeans::params(2)
         .max_n_iterations(3)
         .n_runs(1)
-        .fit(dataset)
-        .unwrap();
+        .fit(dataset);
 }
 pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
-    let _kmeans = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(3)).unwrap();
+    let _kmeans = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(3));
 }
