@@ -1,16 +1,22 @@
 use linfa::prelude::*;
-use linfa_clustering::KMeans as LinfaKMeans;
+use linfa_clustering::{generate_blobs, Dbscan as LinfaDbscan, KMeans as LinfaKMeans};
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
 use ndarray::{array, Array1, Array2};
 use smartcore::{
-    cluster::kmeans::{KMeans as SCKMeans, KMeansParameters},
+    cluster::{
+        dbscan::{DBSCANParameters, DBSCAN as SCDBSCAN},
+        kmeans::{KMeans as SCKMeans, KMeansParameters},
+    },
     linalg::naive::dense_matrix::DenseMatrix,
     linear::{
         linear_regression::LinearRegression as SCLinearRegression,
         logistic_regression::LogisticRegression as SCLogisticRegression,
     },
 };
+
+use ndarray_rand::rand::SeedableRng;
+use rand_isaac::Isaac64Rng;
 
 pub enum TestSize {
     Small,
@@ -147,6 +153,13 @@ pub fn x_clustering(_size: &TestSize) -> Array2<f64> {
     .to_owned()
 }
 
+// pub fn x_clustering(_size: &TestSize) -> Array2<f64> {
+//     let mut rng = Isaac64Rng::seed_from_u64(42);
+//     let cent = array![[10., 10.], [1., 12.], [20., 30.], [-20., 30.]];
+//     let x = generate_blobs(100, &cent, &mut rng);
+//     x
+// }
+
 pub fn get_smartcore_clustering_data(size: &TestSize) -> DenseMatrix<f64> {
     let x = x_clustering(size).to_owned();
     DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap())
@@ -158,10 +171,23 @@ pub fn get_linfa_clustering_data(size: &TestSize) -> Dataset<f64, ()> {
 
 pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
     let _model = LinfaKMeans::params(2)
-        .max_n_iterations(3)
+        .max_n_iterations(10)
         .n_runs(1)
         .fit(dataset);
 }
 pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
-    let _kmeans = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(3));
+    let _kmeans = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(10));
+}
+
+pub fn linfa_dbscan(dataset: Dataset<f64, ()>) {
+    let _model = LinfaDbscan::params(2).transform(dataset);
+}
+
+pub fn smartcore_dbscan(x: &DenseMatrix<f64>) {
+    let _kmeans = SCDBSCAN::fit(
+        x,
+        DBSCANParameters::default()
+            .with_min_samples(2)
+            .with_eps(1e-4),
+    );
 }
