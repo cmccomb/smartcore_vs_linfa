@@ -19,12 +19,13 @@ jobs:
       - name: run the benchmark
         run: cargo bench --verbose
       - name: move new files to criterion folder
-        run: rm -rf criterion; cp -r target/criterion .
+        run: rm -rf criterion; cp -r target/criterion .; rm -rf target
       - name: setup git config
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
       - name: commit
         run: |
+          git add -A
           git commit -m "New benchmark results"
           git push
