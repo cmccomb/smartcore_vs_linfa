@@ -15,13 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: sudo apt-get install libopenblas-dev gfortran zip
+        run: sudo apt-get install libopenblas-dev gfortran
       - name: Run tests
         run: cargo bench --verbose
-      - name: Zip report
-        run: zip -r bench.zip target/criterion
-      - name: Archive benchmark results
-        uses: actions/upload-artifact@v2
-        with:
-          name: benchmark-results
-          path: bench.zip
+#      - name: Zip report
+#        run: sudo apt-get install zip; zip -r bench.zip target/criterion
+#      - name: Archive benchmark results
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: benchmark-results
+#          path: bench.zip

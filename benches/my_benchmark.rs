@@ -2,7 +2,7 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use smartcore_vs_linfa::{linfa_linear_regression, smartcore_linear_regression};
 
 fn criterion_benchmark(c: &mut Criterion) {
-    let mut linear_regression = c.benchmark_group("linear_regression");
+    let mut linear_regression = c.benchmark_group("Linear Regression");
     linear_regression.bench_function("Smartcore", |b| {
         b.iter(|| smartcore_linear_regression(black_box(20)))
     });
