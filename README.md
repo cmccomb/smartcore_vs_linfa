@@ -7,3 +7,6 @@ A comparison between the execution time of algorithms in the [`linfa`](https://r
 
 ### Logistic Regression
 ![](criterion/Logistic%20Regression/report/violin.svg)
+
+### K-Means Clustering
+![](criterion/K-Means%20Clustering/report/violin.svg)

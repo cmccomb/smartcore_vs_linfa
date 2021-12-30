@@ -8,7 +8,9 @@ smartcore = "0.2.0"
 linfa = {version="0.5.0", features=["openblas-static"]}
 linfa-linear = "0.5.0"
 linfa-logistic = "0.5.0"
+linfa-clustering = "0.5.0"
 ndarray = "0.15.4"
+rand_isaac = "0.3.0"
 
 [dev-dependencies]
 criterion = {version="0.3", features=["html_reports"]}

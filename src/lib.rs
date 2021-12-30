@@ -1,8 +1,11 @@
 use linfa::{traits::Fit, Dataset};
+use linfa_clustering::KMeans as LinfaKMeans;
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
 use ndarray::array;
+use rand_isaac::Isaac64Rng;
 use smartcore::{
+    cluster::kmeans::{KMeans as SCKMeans, KMeansParameters},
     linalg::naive::dense_matrix::DenseMatrix,
     linear::{
         linear_regression::{LinearRegression as SCLinearRegression, LinearRegressionParameters},
@@ -133,4 +136,59 @@ pub fn linfa_logistic_regression(_n: u64) {
 
     let lin_reg = LinfaLinearRegression::new();
     let _model = lin_reg.fit(&dataset).unwrap();
+}
+
+pub fn linfa_kmeans(_n: u64) {
+    let observations = Dataset::from(array![
+        [5.1, 3.5, 1.4, 0.2],
+        [4.9, 3.0, 1.4, 0.2],
+        [4.7, 3.2, 1.3, 0.2],
+        [4.6, 3.1, 1.5, 0.2],
+        [5.0, 3.6, 1.4, 0.2],
+        [5.4, 3.9, 1.7, 0.4],
+        [4.6, 3.4, 1.4, 0.3],
+        [5.0, 3.4, 1.5, 0.2],
+        [4.4, 2.9, 1.4, 0.2],
+        [4.9, 3.1, 1.5, 0.1],
+        [7.0, 3.2, 4.7, 1.4],
+        [6.4, 3.2, 4.5, 1.5],
+        [6.9, 3.1, 4.9, 1.5],
+        [5.5, 2.3, 4.0, 1.3],
+        [6.5, 2.8, 4.6, 1.5],
+        [5.7, 2.8, 4.5, 1.3],
+        [6.3, 3.3, 4.7, 1.6],
+        [4.9, 2.4, 3.3, 1.0],
+        [6.6, 2.9, 4.6, 1.3],
+        [5.2, 2.7, 3.9, 1.4],
+    ]);
+    let mut rng = Isaac64Rng::seed_from_u64(42);
+    let _model = LinfaKMeans::params_with_rng(2, rng)
+        .fit(&observations)
+        .expect("KMeans fitted");
+}
+pub fn smartcore_kmeans(_n: u64) {
+    let x = DenseMatrix::from_2d_array(&[
+        &[5.1, 3.5, 1.4, 0.2],
+        &[4.9, 3.0, 1.4, 0.2],
+        &[4.7, 3.2, 1.3, 0.2],
+        &[4.6, 3.1, 1.5, 0.2],
+        &[5.0, 3.6, 1.4, 0.2],
+        &[5.4, 3.9, 1.7, 0.4],
+        &[4.6, 3.4, 1.4, 0.3],
+        &[5.0, 3.4, 1.5, 0.2],
+        &[4.4, 2.9, 1.4, 0.2],
+        &[4.9, 3.1, 1.5, 0.1],
+        &[7.0, 3.2, 4.7, 1.4],
+        &[6.4, 3.2, 4.5, 1.5],
+        &[6.9, 3.1, 4.9, 1.5],
+        &[5.5, 2.3, 4.0, 1.3],
+        &[6.5, 2.8, 4.6, 1.5],
+        &[5.7, 2.8, 4.5, 1.3],
+        &[6.3, 3.3, 4.7, 1.6],
+        &[4.9, 2.4, 3.3, 1.0],
+        &[6.6, 2.9, 4.6, 1.3],
+        &[5.2, 2.7, 3.9, 1.4],
+    ]);
+
+    let _kmeans = SCKMeans::fit(&x, KMeansParameters::default().with_k(2)).unwrap();
 }
