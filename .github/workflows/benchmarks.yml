@@ -20,8 +20,8 @@ jobs:
         run: cargo bench --verbose
       - name: Zip report
         run: sudo apt-get install zip; zip -r bench.zip target/criterion
-#      - name: Archive benchmark results
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: benchmark-results
-#          path: bench.zip
+      - name: Archive benchmark results
+        uses: actions/upload-artifact@v2
+        with:
+          name: benchmark-results
+          path: bench.zip
