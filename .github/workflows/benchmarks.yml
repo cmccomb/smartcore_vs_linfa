@@ -10,7 +10,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  benchmark:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,10 +18,11 @@ jobs:
         run: sudo apt-get install libopenblas-dev gfortran
       - name: Run tests
         run: cargo bench --verbose
-      - name: Zip report
-        run: sudo apt-get install zip; zip -r bench.zip target/criterion
-      - name: Archive benchmark results
-        uses: actions/upload-artifact@v2
-        with:
-          name: benchmark-results
-          path: bench.zip
+      - name: Move new files to criterion folder
+        run: rm -rf criterion; cp target/criterion .
+      - name: Commit and push
+        run: |
+        git config user.name ${{ secrets.GH_USER }}
+        git config user.email "${{ secrets.GH_MAIL }}"
+        git commit -m "New benchmark results"
+        git push
