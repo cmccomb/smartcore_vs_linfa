@@ -9,6 +9,7 @@ While `linfa` requires a BLAS/LAPACK backend (either `openblas`, `netblas`, or `
 
 ## Results
 ### Linear Regression
+_No customization to equate algorithms._
 ![](criterion/Linear%20Regression/report/violin.svg)
 
 ### Logistic Regression
