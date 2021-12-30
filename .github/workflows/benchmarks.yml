@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: sudo apt-get install openblas-dev gfortran
+        run: sudo apt-get install libopenblas-dev gfortran
       - name: Build
         run: cargo build --release
       - name: Run tests
