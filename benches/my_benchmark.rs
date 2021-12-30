@@ -1,4 +1,6 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{
+    black_box, criterion_group, criterion_main, AxisScale, Criterion, PlotConfiguration,
+};
 
 // A benchmark function for linear regression
 fn linear_regression_benchmark(c: &mut Criterion) {
@@ -38,7 +40,9 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
 
 // A benchmark function for logistic regression
 fn kmeans_clustering_benchmark(c: &mut Criterion) {
+    let plot_config = PlotConfiguration::default().summary_scale(AxisScale::Logarithmic);
     let mut bm = c.benchmark_group("K-Means Clustering");
+    bm.plot_config(plot_config);
     bm.bench_function("Smartcore", |b| {
         let x =
             smartcore_vs_linfa::get_smartcore_clustering_data(&smartcore_vs_linfa::TestSize::Small);
