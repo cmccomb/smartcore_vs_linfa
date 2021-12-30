@@ -22,7 +22,7 @@ jobs:
         run: rm -rf criterion; cp target/criterion .
       - name: Commit and push
         run: |
-        git config user.name ${{ secrets.GH_USER }}
-        git config user.email "${{ secrets.GH_MAIL }}"
-        git commit -m "New benchmark results"
-        git push
+          git config user.name ${{ secrets.GH_USER }}
+          git config user.email "${{ secrets.GH_MAIL }}"
+          git commit -m "New benchmark results"
+          git push
