@@ -1,15 +1,25 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use smartcore_vs_linfa::{linfa_linear_regression, smartcore_linear_regression};
 
-fn criterion_benchmark(c: &mut Criterion) {
-    let mut linear_regression = c.benchmark_group("Linear Regression");
-    linear_regression.bench_function("Smartcore", |b| {
-        b.iter(|| smartcore_linear_regression(black_box(20)))
+fn linear_regression_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Linear Regression");
+    bm.bench_function("Smartcore", |b| {
+        b.iter(|| smartcore_vs_linfa::smartcore_linear_regression(black_box(20)))
     });
-    linear_regression.bench_function("Linfa", |b| {
-        b.iter(|| linfa_linear_regression(black_box(20)))
+    bm.bench_function("Linfa", |b| {
+        b.iter(|| smartcore_vs_linfa::linfa_linear_regression(black_box(20)))
     });
 }
 
-criterion_group!(benches, criterion_benchmark);
+
+fn logistic_regression_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Logistic Regression");
+    bm.bench_function("Smartcore", |b| {
+        b.iter(|| smartcore_vs_linfa::smartcore_logistic_regression(black_box(20)))
+    });
+    bm.bench_function("Linfa", |b| {
+        b.iter(|| smartcore_vs_linfa::linfa_logistic_regression(black_box(20)))
+    });
+}
+
+criterion_group!(benches, linear_regression_benchmark, logistic_regression_benchmark);
 criterion_main!(benches);

@@ -7,6 +7,7 @@ edition = "2021"
 smartcore = "0.2.0"
 linfa = {version="0.5.0", features=["openblas-static"]}
 linfa-linear = "0.5.0"
+linfa-logistic = "0.5.0"
 ndarray = "0.15.4"
 
 [dev-dependencies]
