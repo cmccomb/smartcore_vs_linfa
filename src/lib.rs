@@ -1,4 +1,5 @@
-use linfa::{traits::Fit, Dataset};
+// use linfa::{traits::Fit, Dataset};
+use linfa::prelude::*;
 use linfa_clustering::KMeans as LinfaKMeans;
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
