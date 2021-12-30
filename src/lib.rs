@@ -1,7 +1,7 @@
 use linfa::{traits::Fit, Dataset};
 use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
-use ndarray::{arr1, arr2};
+use ndarray::array;
 use smartcore::{
     linalg::naive::dense_matrix::DenseMatrix,
     linear::{
@@ -44,7 +44,7 @@ pub fn smartcore_linear_regression(_n: u64) {
 pub fn linfa_linear_regression(_n: u64) {
     // load Diabetes dataset
     let dataset = Dataset::new(
-        arr2(&[
+        array![
             [234.289, 235.6, 159.0, 107.608, 1947., 60.323],
             [259.426, 232.5, 145.6, 108.632, 1948., 61.122],
             [258.054, 368.2, 161.6, 109.773, 1949., 60.171],
@@ -61,11 +61,11 @@ pub fn linfa_linear_regression(_n: u64) {
             [502.601, 393.1, 251.4, 125.368, 1960., 69.564],
             [518.173, 480.6, 257.2, 127.852, 1961., 69.331],
             [554.894, 400.7, 282.7, 130.081, 1962., 70.551],
-        ]),
-        arr1(&[
+        ],
+        array![
             83.0, 88.5, 88.2, 89.5, 96.2, 98.1, 99.0, 100.0, 101.2, 104.6, 108.4, 110.8, 112.6,
             114.2, 115.7, 116.9,
-        ]),
+        ],
     );
 
     let lin_reg = LinfaLinearRegression::new();
@@ -106,7 +106,7 @@ pub fn smartcore_logistic_regression(_n: u64) {
 pub fn linfa_logistic_regression(_n: u64) {
     // load Diabetes dataset
     let dataset = Dataset::new(
-        arr2(&[
+        array![
             [5.1, 3.5, 1.4, 0.2],
             [4.9, 3.0, 1.4, 0.2],
             [4.7, 3.2, 1.3, 0.2],
@@ -127,10 +127,8 @@ pub fn linfa_logistic_regression(_n: u64) {
             [4.9, 2.4, 3.3, 1.0],
             [6.6, 2.9, 4.6, 1.3],
             [5.2, 2.7, 3.9, 1.4],
-        ]),
-        arr1(&[
-            0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-        ]),
+        ],
+        array![0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,],
     );
 
     let lin_reg = LinfaLinearRegression::new();
