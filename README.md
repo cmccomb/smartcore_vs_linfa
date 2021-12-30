@@ -3,7 +3,9 @@ A comparison between the execution time of algorithms in the [`linfa`](https://r
 
 ## Considerations Besides Execution Time
 ### Documentation
+
 ### Dependencies
+While `linfa` requires a BLAS/LAPACK backend (either `openblas`, `netblas`, or `intel-mkl`), `smartcore` does not. This allows `linfa` to take advantage of some additional optimization, but it limits portability.
 
 ## Results
 ### Linear Regression
