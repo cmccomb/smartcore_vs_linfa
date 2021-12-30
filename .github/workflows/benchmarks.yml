@@ -14,15 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install dependencies
+      - name: install dependencies
         run: sudo apt-get install libopenblas-dev gfortran
-      - name: Run the benchmark
+      - name: run the benchmark
         run: cargo bench --verbose
-      - name: Move new files to criterion folder
+      - name: move new files to criterion folder
         run: rm -rf criterion; cp -r target/criterion .
-      - name: Commit and push
+      - name: setup git config
         run: |
-          git config user.name ${{ secrets.GH_USER }}
-          git config user.email "${{ secrets.GH_MAIL }}"
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: commit
+        run:
           git commit -m "New benchmark results"
           git push
