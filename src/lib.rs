@@ -115,8 +115,8 @@ pub fn linfa_logistic_regression(dataset: &Dataset<f64, u64>) {
         .unwrap();
 }
 
-pub fn linfa_kmeans(_n: u64) {
-    let observations = Dataset::from(array![
+pub fn x_clustering() -> Array2<f64> {
+    array![
         [5.1, 3.5, 1.4, 0.2],
         [4.9, 3.0, 1.4, 0.2],
         [4.7, 3.2, 1.3, 0.2],
@@ -137,37 +137,26 @@ pub fn linfa_kmeans(_n: u64) {
         [4.9, 2.4, 3.3, 1.0],
         [6.6, 2.9, 4.6, 1.3],
         [5.2, 2.7, 3.9, 1.4],
-    ]);
-    let _model = LinfaKMeans::params(2)
-        .max_n_iterations(10)
-        .n_runs(1)
-        .fit(&observations)
-        .expect("KMeans fitted");
+    ]
+    .to_owned()
 }
-pub fn smartcore_kmeans(_n: u64) {
-    let x = DenseMatrix::from_2d_array(&[
-        &[5.1, 3.5, 1.4, 0.2],
-        &[4.9, 3.0, 1.4, 0.2],
-        &[4.7, 3.2, 1.3, 0.2],
-        &[4.6, 3.1, 1.5, 0.2],
-        &[5.0, 3.6, 1.4, 0.2],
-        &[5.4, 3.9, 1.7, 0.4],
-        &[4.6, 3.4, 1.4, 0.3],
-        &[5.0, 3.4, 1.5, 0.2],
-        &[4.4, 2.9, 1.4, 0.2],
-        &[4.9, 3.1, 1.5, 0.1],
-        &[7.0, 3.2, 4.7, 1.4],
-        &[6.4, 3.2, 4.5, 1.5],
-        &[6.9, 3.1, 4.9, 1.5],
-        &[5.5, 2.3, 4.0, 1.3],
-        &[6.5, 2.8, 4.6, 1.5],
-        &[5.7, 2.8, 4.5, 1.3],
-        &[6.3, 3.3, 4.7, 1.6],
-        &[4.9, 2.4, 3.3, 1.0],
-        &[6.6, 2.9, 4.6, 1.3],
-        &[5.2, 2.7, 3.9, 1.4],
-    ]);
 
-    let _kmeans =
-        SCKMeans::fit(&x, KMeansParameters::default().with_k(2).with_max_iter(10)).unwrap();
+pub fn get_smartcore_clustering_data() -> DenseMatrix<f64> {
+    let x = x_classification().to_owned();
+    DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap())
+}
+
+pub fn get_linfa_clustering_data() -> Dataset<f64, ()> {
+    Dataset::from(x_clustering().to_owned())
+}
+
+pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
+    let _model = LinfaKMeans::params(2)
+        .max_n_iterations(3)
+        .n_runs(1)
+        .fit(dataset)
+        .unwrap();
+}
+pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
+    let _kmeans = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(3)).unwrap();
 }

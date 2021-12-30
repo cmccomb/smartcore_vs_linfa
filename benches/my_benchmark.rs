@@ -35,10 +35,12 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
 fn kmeans_clustering_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("K-Means Clustering");
     bm.bench_function("Smartcore", |b| {
-        b.iter(|| smartcore_vs_linfa::smartcore_kmeans(black_box(20)))
+        let x = smartcore_vs_linfa::get_smartcore_clustering_data();
+        b.iter(|| smartcore_vs_linfa::smartcore_kmeans(black_box(&x)))
     });
     bm.bench_function("Linfa", |b| {
-        b.iter(|| smartcore_vs_linfa::linfa_kmeans(black_box(20)))
+        let dataset = smartcore_vs_linfa::get_linfa_clustering_data();
+        b.iter(|| smartcore_vs_linfa::linfa_kmeans(black_box(&dataset)))
     });
 }
 
