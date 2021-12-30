@@ -135,10 +135,11 @@ pub fn linfa_logistic_regression(_n: u64) {
         array![0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,],
     );
 
-    let lin_reg = LinfaLogisticRegression::default()
+    let _lin_reg = LinfaLogisticRegression::default()
         .gradient_tolerance(1e-8)
-        .max_iterations(1000);
-    let _model = lin_reg.fit(&dataset).unwrap();
+        .max_iterations(1000)
+        .fit(&dataset)
+        .unwrap();
 }
 
 pub fn linfa_kmeans(_n: u64) {
