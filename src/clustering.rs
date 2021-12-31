@@ -11,6 +11,10 @@ use smartcore::{
 
 use ndarray_rand::rand::SeedableRng;
 use rand_isaac::Isaac64Rng;
+use smartcore::cluster::dbscan::DBSCAN;
+use smartcore::cluster::kmeans::KMeans;
+use smartcore::error::Failed;
+use smartcore::math::distance::euclidian::Euclidian;
 
 use super::TestSize;
 
@@ -69,8 +73,8 @@ pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
 /// smartcore_kmeans(&get_smartcore_clustering_data(&TestSize::Small));
 /// ```
 
-pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
-    let _model = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(10));
+pub fn smartcore_kmeans(x: &DenseMatrix<f64>) -> KMeans<f64> {
+    SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(10)).unwrap()
 }
 
 pub fn linfa_dbscan(dataset: &Array2<f64>) {
@@ -82,11 +86,12 @@ pub fn linfa_dbscan(dataset: &Array2<f64>) {
 /// use smartcore_vs_linfa::{get_smartcore_clustering_data, smartcore_dbscan, TestSize};
 /// smartcore_dbscan(&get_smartcore_clustering_data(&TestSize::Small));
 /// ```
-pub fn smartcore_dbscan(x: &DenseMatrix<f64>) {
-    let _model = SCDBSCAN::fit(
+pub fn smartcore_dbscan(x: &DenseMatrix<f64>) -> DBSCAN<f64, Euclidian> {
+    SCDBSCAN::fit(
         x,
         DBSCANParameters::default()
             .with_min_samples(2)
             .with_eps(1e-4),
-    );
+    )
+    .unwrap()
 }
