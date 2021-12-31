@@ -1,6 +1,6 @@
-<div style="width:600px; height: 200px; line-height: 200px; text-align: center; margin:auto;">
+<div style="width:600px; height: 200px; display: table; text-align: center; margin:auto;">
     <img src="https://raw.githubusercontent.com/rust-ml/linfa/1ba884495e4e2c44d2ef68b220da1f525ad518a5/mascot.svg" width="150"> 
-    <span style="display: inline-block; vertical-align: middle; line-height: normal; font-size: 32px;">vs</span>
+    <span style="display: table-cell; vertical-align: middle; font-size: 32px;">vs</span>
     <img src="https://smartcorelib.org/assets/logo/smartcore.png" width="150">
 </div>
 
