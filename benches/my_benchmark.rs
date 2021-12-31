@@ -39,17 +39,30 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
         let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(
             &smartcore_vs_linfa::TestSize::Small,
         );
-        b.iter(|| {
-            smartcore_vs_linfa::smartcore_logistic_regression(
-                black_box(&x),
-                black_box(&(y.iter().map(|&elem| elem as f64).collect())),
-            )
-        })
+        b.iter(|| smartcore_vs_linfa::smartcore_logistic_regression(black_box(&x), black_box(&y)))
     });
     bm.bench_function("Linfa", |b| {
         let dataset =
             smartcore_vs_linfa::get_linfa_classification_data(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::linfa_logistic_regression(black_box(&dataset)))
+    });
+}
+
+// A benchmark function for logistic regression
+fn decision_tree_classifier_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Decision Tree Classification");
+    bm.bench_function("Smartcore", |b| {
+        let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(
+            &smartcore_vs_linfa::TestSize::Small,
+        );
+        b.iter(|| {
+            smartcore_vs_linfa::smartcore_decision_tree_classifier(black_box(&x), black_box(&y))
+        })
+    });
+    bm.bench_function("Linfa", |b| {
+        let dataset =
+            smartcore_vs_linfa::get_linfa_classification_data(&smartcore_vs_linfa::TestSize::Small);
+        b.iter(|| smartcore_vs_linfa::linfa_decision_tree_classifier(black_box(&dataset)))
     });
 }
 
@@ -94,6 +107,7 @@ criterion_group!(
     linear_regression_benchmark,
     elasticnet_regression_benchmark,
     logistic_regression_benchmark,
+    decision_tree_classifier_benchmark,
     kmeans_clustering_benchmark,
     dbscan_clustering_benchmark,
 );

@@ -1,4 +1,8 @@
-<img src="https://raw.githubusercontent.com/rust-ml/linfa/1ba884495e4e2c44d2ef68b220da1f525ad518a5/mascot.svg" width="300"> <img src="https://smartcorelib.org/assets/logo/smartcore.png" width="300">
+<div style="width:600px; height: 200px; line-height: 200px; text-align: center; margin:auto;">
+    <img src="https://raw.githubusercontent.com/rust-ml/linfa/1ba884495e4e2c44d2ef68b220da1f525ad518a5/mascot.svg" width="150"> 
+    <span style="display: inline-block; vertical-align: middle; line-height: normal; font-size: 32px;">vs</span>
+    <img src="https://smartcorelib.org/assets/logo/smartcore.png" width="150">
+</div>
 
 ## About
 Two heavy hitters have emerged in terms of `scikit-learn` analogous machine learning frameworks for rust: [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/). Both provide access to a number of bread-and-butter algorithms that form the backbone of many analyses. This repository provides a comparison between the execution time of algorithms in these two machine learning frameworks. The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
@@ -32,6 +36,10 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 - Maximum number of iterations set to `1000`
 
 ![](criterion/Logistic%20Regression/report/violin.svg)
+
+#### Decision Tree
+
+![](criterion/Decision%20Tree%20Classification/report/violin.svg)
 
 
 ### Clustering

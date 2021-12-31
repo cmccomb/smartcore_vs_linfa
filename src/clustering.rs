@@ -1,6 +1,6 @@
 use linfa::prelude::*;
-use linfa_clustering::{generate_blobs, Dbscan as LinfaDbscan, KMeans as LinfaKMeans};
-use ndarray::{array, Array1, Array2};
+use linfa_clustering::{Dbscan as LinfaDbscan, KMeans as LinfaKMeans};
+use ndarray::{array, Array2};
 use smartcore::{
     cluster::{
         dbscan::{DBSCANParameters, DBSCAN as SCDBSCAN},
@@ -40,7 +40,7 @@ pub fn x_clustering(_size: &TestSize) -> Array2<f64> {
     .to_owned()
 }
 
-// pub fn x_clustering(_size: &TestSize) -> Array2<f64> {
+// pub fn x_clustering2(_size: &TestSize) -> Array2<f64> {
 //     let mut rng = Isaac64Rng::seed_from_u64(42);
 //     let cent = array![[10., 10.], [1., 12.], [20., 30.], [-20., 30.]];
 //     let x = generate_blobs(100, &cent, &mut rng);
