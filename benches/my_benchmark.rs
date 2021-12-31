@@ -53,27 +53,6 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
     });
 }
 
-// A benchmark function for svm
-fn svm_benchmark(c: &mut Criterion) {
-    let mut bm = c.benchmark_group("SVM Classification");
-    bm.bench_function("Smartcore", |b| {
-        let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(
-            &smartcore_vs_linfa::TestSize::Small,
-        );
-        b.iter(|| {
-            smartcore_vs_linfa::smartcore_svm_classification(
-                black_box(&x),
-                black_box(&(y.iter().map(|&elem| elem as f64).collect())),
-            )
-        })
-    });
-    bm.bench_function("Linfa", |b| {
-        let dataset =
-            smartcore_vs_linfa::get_linfa_classification_data(&smartcore_vs_linfa::TestSize::Small);
-        b.iter(|| smartcore_vs_linfa::linfa_svm_classification(black_box(&dataset)))
-    });
-}
-
 // A benchmark function for kmeans clustering
 fn kmeans_clustering_benchmark(c: &mut Criterion) {
     let plot_config = PlotConfiguration::default().summary_scale(AxisScale::Logarithmic);

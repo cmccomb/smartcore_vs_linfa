@@ -31,9 +31,6 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 
 ![](criterion/Logistic%20Regression/report/violin.svg)
 
-#### Support Vector Machine
-![](criterion/SVM/report/violin.svg)
-
 
 ### Clustering
 #### K-Means
