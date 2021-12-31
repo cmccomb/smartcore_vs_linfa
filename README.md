@@ -31,8 +31,12 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 
 ![](criterion/Logistic%20Regression/report/violin.svg)
 
+#### Support Vector Machine
+![](criterion/SVM/report/violin.svg)
+
+
 ### Clustering
-#### K-Means Clustering
+#### K-Means
 
 Since the two implementations use different convergence criteria, the number of max iterations was equated at a low value, and only 1 run of the `linfa` algorithm was permitted:
 
@@ -41,6 +45,6 @@ Since the two implementations use different convergence criteria, the number of 
 
 ![](criterion/K-Means%20Clustering/report/violin.svg)
 
-#### DBSCAN Clustering
+#### DBSCAN
 
 ![](criterion/DBSCAN%20Clustering/report/violin.svg)

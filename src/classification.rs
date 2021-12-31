@@ -1,9 +1,11 @@
 use linfa::prelude::*;
 use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
+use linfa_svm::Svm;
 use ndarray::{array, Array1, Array2};
 use smartcore::{
     linalg::naive::dense_matrix::DenseMatrix,
     linear::logistic_regression::LogisticRegression as SCLogisticRegression,
+    svm::svc::{SVCParameters, SVC},
 };
 
 use super::TestSize;
@@ -51,13 +53,21 @@ pub fn get_linfa_classification_data(size: &TestSize) -> Dataset<f64, u64> {
 }
 
 pub fn smartcore_logistic_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
-    let _lr = SCLogisticRegression::fit(x, y, Default::default()).unwrap();
+    let _model = SCLogisticRegression::fit(x, y, Default::default()).unwrap();
 }
 
 pub fn linfa_logistic_regression(dataset: &Dataset<f64, u64>) {
-    let _lin_reg = LinfaLogisticRegression::default()
+    let _model = LinfaLogisticRegression::default()
         .gradient_tolerance(1e-8)
         .max_iterations(1000)
         .fit(dataset)
         .unwrap();
+}
+
+pub fn smartcore_svm_classification(x: &DenseMatrix<f64>, y: &Vec<f64>) {
+    let _model = SVC::fit(x, y, SVCParameters::default()).unwrap();
+}
+
+pub fn linfa_svm_classification(dataset: &Dataset<f64, u64>) {
+    let _model = Svm::<_, bool>::params().fit(&dataset);
 }
