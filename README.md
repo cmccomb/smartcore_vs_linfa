@@ -33,3 +33,7 @@ Since the two implementations use different convergence criteria, the number of 
 - Number of runs set to `1`
 
 ![](criterion/K-Means%20Clustering/report/violin.svg)
+
+### DBSCAN Clustering
+
+![](criterion/DBSCAN%20Clustering/report/violin.svg)

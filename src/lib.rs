@@ -176,15 +176,15 @@ pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
         .fit(dataset);
 }
 pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
-    let _kmeans = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(10));
+    let _model = SCKMeans::fit(x, KMeansParameters::default().with_k(2).with_max_iter(10));
 }
 
-pub fn linfa_dbscan(dataset: Dataset<f64, ()>) {
+pub fn linfa_dbscan(dataset: &Array2<f64>) {
     let _model = LinfaDbscan::params(2).transform(dataset);
 }
 
 pub fn smartcore_dbscan(x: &DenseMatrix<f64>) {
-    let _kmeans = SCDBSCAN::fit(
+    let _model = SCDBSCAN::fit(
         x,
         DBSCANParameters::default()
             .with_min_samples(2)
