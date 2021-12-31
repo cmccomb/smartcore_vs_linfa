@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/rust-ml/linfa/1ba884495e4e2c44d2ef68b220da1f525ad518a5/mascot.svg" width="300"> <img src="https://smartcorelib.org/assets/logo/smartcore.png" width="300">
+
 ## About
 Two heavy hitters have emerged in terms of `scikit-learn` analogous machine learning frameworks for rust: [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/). Both provide access to a number of bread-and-butter algorithms that form the backbone of many analyses. This repository provides a comparison between the execution time of algorithms in these two machine learning frameworks. The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
 

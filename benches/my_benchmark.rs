@@ -94,7 +94,6 @@ criterion_group!(
     linear_regression_benchmark,
     elasticnet_regression_benchmark,
     logistic_regression_benchmark,
-    svm_benchmark,
     kmeans_clustering_benchmark,
     dbscan_clustering_benchmark,
 );
