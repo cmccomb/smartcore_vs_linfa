@@ -1,5 +1,5 @@
 ## About
-A comparison between the execution time of algorithms in the [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/) machine learning frameworks. The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
+Two heavy hitters have emerged in terms of `scikit-learn` analogous machine learning frameworks for rust: [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/). Both provide access to a number of bread-and-butter algorithms that form the backbone of many analyses. This repository provides a comparison between the execution time of algorithms in these two machine learning frameworks. The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
 
 ## Considerations Besides Execution Time
 Over the process of creating this benchmark study, a few additional differences between the libraries emerged.
@@ -11,12 +11,16 @@ The documentation for `smartcore` is a bit more consistent across algorithms. Th
 While `linfa` requires a BLAS/LAPACK backend (either `openblas`, `netblas`, or `intel-mkl`), `smartcore` does not. This allows `linfa` to take advantage of some additional optimization, but it limits portability.
 
 ## Results
-### Linear Regression
+### Regression
+#### Linear Regression
 _No customization needed to equate algorithms._
 
 ![](criterion/Linear%20Regression/report/violin.svg)
 
-### Logistic Regression
+#### Elastic Net
+
+### Classification
+#### Logistic Regression
 
 The `smartcore` implementation has no parameters, but the `linfa` settings were modified to align it with `smartcore` defaults:
 
@@ -25,7 +29,8 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 
 ![](criterion/Logistic%20Regression/report/violin.svg)
 
-### K-Means Clustering
+### Clustering
+#### K-Means Clustering
 
 Since the two implementations use different convergence criteria, the number of max iterations was equated at a low value, and only 1 run of the `linfa` algorithm was permitted:
 
@@ -34,6 +39,6 @@ Since the two implementations use different convergence criteria, the number of 
 
 ![](criterion/K-Means%20Clustering/report/violin.svg)
 
-### DBSCAN Clustering
+#### DBSCAN Clustering
 
 ![](criterion/DBSCAN%20Clustering/report/violin.svg)

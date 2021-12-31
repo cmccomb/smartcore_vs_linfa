@@ -17,6 +17,21 @@ fn linear_regression_benchmark(c: &mut Criterion) {
     });
 }
 
+// A benchmark function for elastic net regression
+fn elasticnet_regression_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Elastic Net");
+    bm.bench_function("Smartcore", |b| {
+        let (x, y) =
+            smartcore_vs_linfa::get_smartcore_regression_data(&smartcore_vs_linfa::TestSize::Small);
+        b.iter(|| smartcore_vs_linfa::smartcore_elasticnet_regression(black_box(&x), black_box(&y)))
+    });
+    bm.bench_function("Linfa", |b| {
+        let dataset =
+            smartcore_vs_linfa::get_linfa_regression_data(&smartcore_vs_linfa::TestSize::Small);
+        b.iter(|| smartcore_vs_linfa::linfa_elasticnet_regression(black_box(&dataset)))
+    });
+}
+
 // A benchmark function for logistic regression
 fn logistic_regression_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Logistic Regression");
