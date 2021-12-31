@@ -19,6 +19,8 @@ _No customization needed to equate algorithms._
 
 #### Elastic Net
 
+![](criterion/Elastic%20Net/report/violin.svg)
+
 ### Classification
 #### Logistic Regression
 
