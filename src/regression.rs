@@ -88,8 +88,8 @@ pub fn get_linfa_regression_data(size: &TestSize) -> Dataset<f64, f64> {
 pub fn smartcore_linear_regression(
     x: &DenseMatrix<f64>,
     y: &Vec<f64>,
-) -> SCLinearRegression<f64, DenseMatrix<f64>> {
-    SCLinearRegression::fit(x, y, Default::default()).unwrap()
+)  {
+    SCLinearRegression::fit(x, y, Default::default());
 }
 
 /// Linfa linear regression
@@ -97,8 +97,8 @@ pub fn smartcore_linear_regression(
 /// use smartcore_vs_linfa::{get_linfa_regression_data, linfa_linear_regression, TestSize};
 /// linfa_linear_regression(&get_linfa_regression_data(&TestSize::Small));
 /// ```
-pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>) -> FittedLinearRegression<f64> {
-    LinfaLinearRegression::new().fit(dataset).unwrap()
+pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>)  {
+    LinfaLinearRegression::new().fit(dataset);
 }
 
 /// Smartcore linear regression
@@ -110,7 +110,7 @@ pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>) -> FittedLinearRegre
 pub fn smartcore_elasticnet_regression(
     x: &DenseMatrix<f64>,
     y: &Vec<f64>,
-) -> SCElasticNet<f64, DenseMatrix<f64>> {
+) {
     SCElasticNet::fit(
         x,
         y,
@@ -119,8 +119,7 @@ pub fn smartcore_elasticnet_regression(
             .with_l1_ratio(0.5)
             .with_max_iter(1000)
             .with_tol(1e-4),
-    )
-    .unwrap()
+    );
 }
 
 /// Linfa linear regression
@@ -128,12 +127,11 @@ pub fn smartcore_elasticnet_regression(
 /// use smartcore_vs_linfa::{get_linfa_regression_data, linfa_elasticnet_regression, TestSize};
 /// linfa_elasticnet_regression(&get_linfa_regression_data(&TestSize::Small));
 /// ```
-pub fn linfa_elasticnet_regression(dataset: &Dataset<f64, f64>) -> ElasticNet<f64> {
+pub fn linfa_elasticnet_regression(dataset: &Dataset<f64, f64>) {
     LinfaElasticNet::params()
         .penalty(0.5)
         .l1_ratio(0.5)
         .max_iterations(1000)
         .tolerance(1e-4)
-        .fit(dataset)
-        .unwrap()
+        .fit(dataset);
 }

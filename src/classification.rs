@@ -58,8 +58,8 @@ pub fn get_linfa_classification_data(size: &TestSize) -> Dataset<f64, usize> {
 pub fn smartcore_logistic_regression(
     x: &DenseMatrix<f64>,
     y: &Vec<f64>,
-) -> LogisticRegression<f64, DenseMatrix<f64>> {
-    SCLogisticRegression::fit(x, y, Default::default()).unwrap()
+)  {
+    SCLogisticRegression::fit(x, y, Default::default());
 }
 
 /// linfa logistic regression
@@ -69,24 +69,23 @@ pub fn smartcore_logistic_regression(
 /// ```
 pub fn linfa_logistic_regression(
     dataset: &Dataset<f64, usize>,
-) -> FittedLogisticRegression<f64, usize> {
+) {
     LinfaLogisticRegression::default()
         .gradient_tolerance(1e-8)
         .max_iterations(1000)
-        .fit(dataset)
-        .unwrap()
+        .fit(dataset);
 }
 
 /// Decision tree smartcore
 /// ```
 /// use smartcore_vs_linfa::{get_smartcore_classification_data, smartcore_decision_tree_classifier, TestSize};
 /// let (x, y) = get_smartcore_classification_data(&TestSize::Small);
-/// smartcore_decision_tree_classifier(&x, &(y.iter().map(|&elem| elem as f64).collect()));
+/// smartcore_decision_tree_classifier(&x, &y);
 /// ```
 pub fn smartcore_decision_tree_classifier(
     x: &DenseMatrix<f64>,
     y: &Vec<f64>,
-) -> DecisionTreeClassifier<f64> {
+) {
     DecisionTreeClassifier::fit(
         x,
         y,
@@ -95,8 +94,7 @@ pub fn smartcore_decision_tree_classifier(
             .with_max_depth(100)
             .with_min_samples_leaf(1)
             .with_min_samples_split(1),
-    )
-        .unwrap()
+    );
 }
 
 /// decision tree linfa
@@ -104,12 +102,11 @@ pub fn smartcore_decision_tree_classifier(
 /// use smartcore_vs_linfa::{get_linfa_classification_data, linfa_decision_tree_classifier, TestSize};
 /// linfa_decision_tree_classifier(&get_linfa_classification_data(&TestSize::Small));
 /// ```
-pub fn linfa_decision_tree_classifier(dataset: &Dataset<f64, usize>) -> DecisionTree<f64, usize> {
+pub fn linfa_decision_tree_classifier(dataset: &Dataset<f64, usize>) {
     LinfaDecisionTree::params()
         .split_quality(SplitQuality::Gini)
         .max_depth(Some(100))
         .min_weight_split(1.0)
         .min_weight_leaf(1.0)
-        .fit(dataset)
-        .unwrap()
+        .fit(dataset);
 }

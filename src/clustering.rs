@@ -52,8 +52,8 @@ pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
 /// smartcore_kmeans(&get_smartcore_clustering_data(&TestSize::Small));
 /// ```
 
-pub fn smartcore_kmeans(x: &DenseMatrix<f64>) -> SCKMeans<f64> {
-    SCKMeans::fit(x, KMeansParameters::default().with_k(5).with_max_iter(10)).unwrap()
+pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
+    SCKMeans::fit(x, KMeansParameters::default().with_k(5).with_max_iter(10));
 }
 
 pub fn linfa_dbscan(dataset: &Array2<f64>) {
@@ -65,12 +65,11 @@ pub fn linfa_dbscan(dataset: &Array2<f64>) {
 /// use smartcore_vs_linfa::{get_smartcore_clustering_data, smartcore_dbscan, TestSize};
 /// smartcore_dbscan(&get_smartcore_clustering_data(&TestSize::Small));
 /// ```
-pub fn smartcore_dbscan(x: &DenseMatrix<f64>) -> SCDBSCAN<f64, Euclidian> {
+pub fn smartcore_dbscan(x: &DenseMatrix<f64>)  {
     SCDBSCAN::fit(
         x,
         DBSCANParameters::default()
             .with_min_samples(5)
             .with_eps(1e-4),
-    )
-        .unwrap()
+    );
 }
