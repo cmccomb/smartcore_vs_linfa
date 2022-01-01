@@ -1,48 +1,21 @@
 use linfa::prelude::*;
 use linfa_elasticnet::{ElasticNet as LinfaElasticNet, ElasticNet};
 use linfa_linear::{FittedLinearRegression, LinearRegression as LinfaLinearRegression};
+use linfa_svm::Svm as LinfaSvm;
+
 use ndarray::{Array1, Array2};
 use smartcore::{
-    linalg::naive::dense_matrix::DenseMatrix,
     dataset::Dataset as SCDataset,
+    linalg::naive::dense_matrix::DenseMatrix,
     linear::{
         elastic_net::{ElasticNet as SCElasticNet, ElasticNetParameters},
         linear_regression::LinearRegression as SCLinearRegression,
     },
+    svm::svr::{SVRParameters, SVR as SCSVR},
 };
 
-use super::TestSize;
 use super::make_regression;
-
-// pub fn x_regression(_size: &TestSize) -> Array2<f64> {
-//     array![
-//         [234.289, 235.6, 159.0, 107.608, 1947., 60.323],
-//         [259.426, 232.5, 145.6, 108.632, 1948., 61.122],
-//         [258.054, 368.2, 161.6, 109.773, 1949., 60.171],
-//         [284.599, 335.1, 165.0, 110.929, 1950., 61.187],
-//         [328.975, 209.9, 309.9, 112.075, 1951., 63.221],
-//         [346.999, 193.2, 359.4, 113.270, 1952., 63.639],
-//         [365.385, 187.0, 354.7, 115.094, 1953., 64.989],
-//         [363.112, 357.8, 335.0, 116.219, 1954., 63.761],
-//         [397.469, 290.4, 304.8, 117.388, 1955., 66.019],
-//         [419.180, 282.2, 285.7, 118.734, 1956., 67.857],
-//         [442.769, 293.6, 279.8, 120.445, 1957., 68.169],
-//         [444.546, 468.1, 263.7, 121.950, 1958., 66.513],
-//         [482.704, 381.3, 255.2, 123.366, 1959., 68.655],
-//         [502.601, 393.1, 251.4, 125.368, 1960., 69.564],
-//         [518.173, 480.6, 257.2, 127.852, 1961., 69.331],
-//         [554.894, 400.7, 282.7, 130.081, 1962., 70.551],
-//     ]
-//     .to_owned()
-// }
-//
-// pub fn y_regression(_size: &TestSize) -> Array1<f64> {
-//     array![
-//         83.0, 88.5, 88.2, 89.5, 96.2, 98.1, 99.0, 100.0, 101.2, 104.6, 108.4, 110.8, 112.6, 114.2,
-//         115.7, 116.9,
-//     ]
-// }
-
+use super::TestSize;
 
 pub fn xy_regression(size: &TestSize) -> (Array2<f64>, Array1<f64>) {
     match size {
@@ -52,16 +25,14 @@ pub fn xy_regression(size: &TestSize) -> (Array2<f64>, Array1<f64>) {
     }
 }
 
-pub fn dataset_to_regression_array(
-    dataset: SCDataset<f32, f32>,
-) -> (Array2<f64>, Array1<f64>) {
+pub fn dataset_to_regression_array(dataset: SCDataset<f32, f32>) -> (Array2<f64>, Array1<f64>) {
     (
         Array2::from_shape_vec(
             (dataset.num_samples, dataset.num_features),
             dataset.data.iter().map(|elem| *elem as f64).collect(),
         )
-            .unwrap()
-            .to_owned(),
+        .unwrap()
+        .to_owned(),
         Array1::from_vec(dataset.target.iter().map(|elem| *elem as f64).collect()).to_owned(),
     )
 }
@@ -85,10 +56,7 @@ pub fn get_linfa_regression_data(size: &TestSize) -> Dataset<f64, f64> {
 /// let (x, y) = get_smartcore_regression_data(&TestSize::Small);
 /// smartcore_linear_regression(&x, &y);
 /// ```
-pub fn smartcore_linear_regression(
-    x: &DenseMatrix<f64>,
-    y: &Vec<f64>,
-)  {
+pub fn smartcore_linear_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
     SCLinearRegression::fit(x, y, Default::default());
 }
 
@@ -97,7 +65,7 @@ pub fn smartcore_linear_regression(
 /// use smartcore_vs_linfa::{get_linfa_regression_data, linfa_linear_regression, TestSize};
 /// linfa_linear_regression(&get_linfa_regression_data(&TestSize::Small));
 /// ```
-pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>)  {
+pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>) {
     LinfaLinearRegression::new().fit(dataset);
 }
 
@@ -107,10 +75,7 @@ pub fn linfa_linear_regression(dataset: &Dataset<f64, f64>)  {
 /// let (x, y) = get_smartcore_regression_data(&TestSize::Small);
 /// smartcore_elasticnet_regression(&x, &y);
 /// ```
-pub fn smartcore_elasticnet_regression(
-    x: &DenseMatrix<f64>,
-    y: &Vec<f64>,
-) {
+pub fn smartcore_elasticnet_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
     SCElasticNet::fit(
         x,
         y,
@@ -134,4 +99,23 @@ pub fn linfa_elasticnet_regression(dataset: &Dataset<f64, f64>) {
         .max_iterations(1000)
         .tolerance(1e-4)
         .fit(dataset);
+}
+
+/// svm smartcore
+/// ```
+/// use smartcore_vs_linfa::{get_smartcore_regression_data, smartcore_svm_regression, TestSize};
+/// let (x, y) = get_smartcore_regression_data(&TestSize::Small);
+/// smartcore_svm_regression(&x, &y);
+/// ```
+pub fn smartcore_svm_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
+    SCSVR::fit(x, y, SVRParameters::default());
+}
+
+/// svm linfa
+/// ```
+/// use smartcore_vs_linfa::{get_linfa_regression_data, linfa_svm_regression, TestSize};
+/// linfa_svm_regression(&get_linfa_regression_data(&TestSize::Small));
+/// ```
+pub fn linfa_svm_regression(dataset: &Dataset<f64, f64>) {
+    LinfaSvm::<_, f64>::params().fit(dataset);
 }

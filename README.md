@@ -14,7 +14,7 @@
 | LASSO Regression              | ✓                |              |                   |
 | Decision Tree Regression      | ✓                |              |                   |
 | Random Forest Regression      | ✓                |              |                   |
-| Support Vector Regression     | ✓                | ✓            |                   |
+| Support Vector Regression     | ✓                | ✓            | ✓                 |
 | KNN Regression                | ✓                |              |                   |
 | Elastic Net Regression        | ✓                | ✓            | ✓                 |
 | Partial Least Squares         |                  | ✓            |                   |
@@ -56,6 +56,13 @@ _No customization needed to equate algorithms._
 #### [Elastic Net](criterion/Elastic%20Net/report/index.html)
 
 ![](criterion/Elastic%20Net/report/violin.svg)
+
+
+#### [Support Vector Regression](criterion/Support%20Vector%20Regression/report/index.html)
+
+![](criterion/Support%20Vector%20Regression/report/violin.svg)
+
+
 
 ### Classification
 #### [Logistic Regression](criterion/Logistic%20Regression/report/index.html)

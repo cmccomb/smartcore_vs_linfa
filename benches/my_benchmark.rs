@@ -38,6 +38,22 @@ fn elasticnet_regression_benchmark(c: &mut Criterion) {
 }
 
 // A benchmark function for logistic regression
+fn svr_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Support Vector Regression");
+    bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
+    for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
+        bm.bench_function(format!("{}/Smart", test_size), |b| {
+            let (x, y) = smartcore_vs_linfa::get_smartcore_regression_data(test_size);
+            b.iter(|| smartcore_vs_linfa::smartcore_svm_regression(black_box(&x), black_box(&y)))
+        });
+        bm.bench_function(format!("{}/Linfa", test_size), |b| {
+            let dataset = smartcore_vs_linfa::get_linfa_regression_data(test_size);
+            b.iter(|| smartcore_vs_linfa::linfa_svm_regression(black_box(&dataset)))
+        });
+    }
+}
+
+// A benchmark function for logistic regression
 fn logistic_regression_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Logistic Regression");
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
@@ -90,7 +106,7 @@ fn gnb_benchmark(c: &mut Criterion) {
 }
 
 // A benchmark function for logistic regression
-fn svm_benchmark(c: &mut Criterion) {
+fn svc_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Support Vector Classification");
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
@@ -158,10 +174,11 @@ criterion_group!(
     benches,
     linear_regression_benchmark,
     elasticnet_regression_benchmark,
+    svr_benchmark,
     logistic_regression_benchmark,
     decision_tree_classifier_benchmark,
     gnb_benchmark,
-    svm_benchmark,
+    svc_benchmark,
     kmeans_clustering_benchmark,
     dbscan_clustering_benchmark,
     pca_benchmark,

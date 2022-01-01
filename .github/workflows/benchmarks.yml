@@ -16,8 +16,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: install dependencies
         run: sudo apt-get install libopenblas-dev gfortran
-      - name: run a check
-        run: cargo check
+      - name: run tests
+        run: cargo test
       - name: run the benchmark
         run: cargo bench --verbose
       - name: move new files to criterion folder
