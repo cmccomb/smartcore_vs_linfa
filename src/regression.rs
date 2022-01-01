@@ -1,7 +1,7 @@
 use linfa::prelude::*;
 use linfa_elasticnet::{ElasticNet as LinfaElasticNet, ElasticNet};
 use linfa_linear::{FittedLinearRegression, LinearRegression as LinfaLinearRegression};
-use ndarray::{array, Array1, Array2};
+use ndarray::{Array1, Array2};
 use smartcore::{
     linalg::naive::dense_matrix::DenseMatrix,
     dataset::Dataset as SCDataset,
@@ -74,7 +74,7 @@ pub fn get_smartcore_regression_data(size: &TestSize) -> (DenseMatrix<f64>, Vec<
     )
 }
 
-pub fn get_linfa_regression_data(size: &TestSize) -> Dataset<f64, usize> {
+pub fn get_linfa_regression_data(size: &TestSize) -> Dataset<f64, f64> {
     let (x, y) = xy_regression(size);
     Dataset::new(x, y)
 }

@@ -17,9 +17,6 @@ impl Display for TestSize {
 }
 
 
-//! # Dataset Generators
-//!
-use rand::distributions::Uniform;
 use rand::prelude::*;
 use rand_distr::Normal;
 
