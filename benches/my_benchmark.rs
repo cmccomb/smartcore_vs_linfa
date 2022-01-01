@@ -1,6 +1,7 @@
 use criterion::{
     black_box, criterion_group, criterion_main, AxisScale, Criterion, PlotConfiguration,
 };
+use smartcore_vs_linfa::TestSize;
 
 // A benchmark function for linear regression
 fn linear_regression_benchmark(c: &mut Criterion) {
@@ -68,19 +69,17 @@ fn decision_tree_classifier_benchmark(c: &mut Criterion) {
 
 // A benchmark function for kmeans clustering
 fn kmeans_clustering_benchmark(c: &mut Criterion) {
-    let plot_config = PlotConfiguration::default().summary_scale(AxisScale::Logarithmic);
     let mut bm = c.benchmark_group("K-Means Clustering");
-    // bm.plot_config(plot_config);
-    bm.bench_function("Smartcore", |b| {
-        let x =
-            smartcore_vs_linfa::get_smartcore_clustering_data(&smartcore_vs_linfa::TestSize::Small);
-        b.iter(|| smartcore_vs_linfa::smartcore_kmeans(black_box(&x)))
-    });
-    bm.bench_function("Linfa", |b| {
-        let dataset =
-            smartcore_vs_linfa::get_linfa_clustering_data(&smartcore_vs_linfa::TestSize::Small);
-        b.iter(|| smartcore_vs_linfa::linfa_kmeans(black_box(&dataset)))
-    });
+    for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
+        bm.bench_function(format!("{}/Smartcore", test_size), |b| {
+            let x = smartcore_vs_linfa::get_smartcore_clustering_data(test_size);
+            b.iter(|| smartcore_vs_linfa::smartcore_kmeans(black_box(&x)))
+        });
+        bm.bench_function(format!("{}/Linfa", test_size), |b| {
+            let dataset = smartcore_vs_linfa::get_linfa_clustering_data(test_size);
+            b.iter(|| smartcore_vs_linfa::linfa_kmeans(black_box(&dataset)))
+        });
+    }
 }
 
 // A benchmark function for kmeans clustering
