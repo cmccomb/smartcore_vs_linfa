@@ -89,6 +89,22 @@ fn gnb_benchmark(c: &mut Criterion) {
     }
 }
 
+// A benchmark function for logistic regression
+fn svm_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Support Vector Classification");
+    bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
+    for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
+        bm.bench_function(format!("{}/Smart", test_size), |b| {
+            let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(test_size);
+            b.iter(|| smartcore_vs_linfa::smartcore_svm_classifier(black_box(&x), black_box(&y)))
+        });
+        bm.bench_function(format!("{}/Linfa", test_size), |b| {
+            let dataset = smartcore_vs_linfa::get_linfa_classification_data_as_bool(test_size);
+            b.iter(|| smartcore_vs_linfa::linfa_svm_classifier(black_box(&dataset)))
+        });
+    }
+}
+
 // A benchmark function for kmeans clustering
 fn kmeans_clustering_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("K-Means Clustering");
@@ -145,6 +161,7 @@ criterion_group!(
     logistic_regression_benchmark,
     decision_tree_classifier_benchmark,
     gnb_benchmark,
+    svm_benchmark,
     kmeans_clustering_benchmark,
     dbscan_clustering_benchmark,
     pca_benchmark,

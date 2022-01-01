@@ -1,6 +1,7 @@
 use linfa::prelude::*;
 use linfa_bayes::GaussianNb as LinfaGaussianNb;
 use linfa_logistic::{FittedLogisticRegression, LogisticRegression as LinfaLogisticRegression};
+use linfa_svm::Svm as LinfaSvm;
 use linfa_trees::{DecisionTree as LinfaDecisionTree, DecisionTree, SplitQuality};
 use ndarray::{Array1, Array2};
 use smartcore::linear::logistic_regression::LogisticRegression;
@@ -9,6 +10,7 @@ use smartcore::{
     linalg::naive::dense_matrix::DenseMatrix,
     linear::logistic_regression::LogisticRegression as SCLogisticRegression,
     naive_bayes::gaussian::{GaussianNB as SCGaussianNB, GaussianNBParameters},
+    svm::svc::{SVCParameters, SVC as SCSVC},
     tree::decision_tree_classifier::{
         DecisionTreeClassifier, DecisionTreeClassifierParameters, SplitCriterion,
     },
@@ -49,6 +51,15 @@ pub fn get_smartcore_classification_data(size: &TestSize) -> (DenseMatrix<f64>, 
 pub fn get_linfa_classification_data(size: &TestSize) -> Dataset<f64, usize> {
     let (x, y) = xy_classification(size);
     Dataset::new(x, y)
+}
+
+pub fn get_linfa_classification_data_as_bool(size: &TestSize) -> Dataset<f64, bool> {
+    let (x, y) = xy_classification(size);
+    let ybool: Array1<bool> = y
+        .iter()
+        .map(|elem| if *elem == 1 { true } else { false })
+        .collect();
+    Dataset::new(x, ybool)
 }
 
 /// Logistic regression smartcore
@@ -122,4 +133,23 @@ pub fn smartcore_gnb_classifier(x: &DenseMatrix<f64>, y: &Vec<f64>) {
 /// ```
 pub fn linfa_gnb_classifier(dataset: &Dataset<f64, usize>) {
     LinfaGaussianNb::params().fit(dataset);
+}
+
+/// svm smartcore
+/// ```
+/// use smartcore_vs_linfa::{get_smartcore_classification_data, smartcore_svm_classifier, TestSize};
+/// let (x, y) = get_smartcore_classification_data(&TestSize::Small);
+/// smartcore_svm_classifier(&x, &y);
+/// ```
+pub fn smartcore_svm_classifier(x: &DenseMatrix<f64>, y: &Vec<f64>) {
+    SCSVC::fit(x, y, SVCParameters::default());
+}
+
+/// svm linfa
+/// ```
+/// use smartcore_vs_linfa::{get_linfa_classification_data_as_bool, linfa_svm_classifier, TestSize};
+/// linfa_svm_classifier(&get_linfa_classification_data_as_bool(&TestSize::Small));
+/// ```
+pub fn linfa_svm_classifier(dataset: &Dataset<f64, bool>) {
+    LinfaSvm::<_, bool>::params().fit(dataset);
 }

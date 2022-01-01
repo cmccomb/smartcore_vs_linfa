@@ -21,7 +21,7 @@
 | Logistic Regression           | ✓                | ✓            | ✓                 |
 | Decision Tree Classification  | ✓                | ✓            | ✓                 |
 | Random Forest Classification  | ✓                |              |                   |
-| Support Vector Classification | ✓                | ✓            |                   |
+| Support Vector Classification | ✓                | ✓            | ✓                 |
 | KNN Classification            | ✓                |              |                   |
 | Gaussian Naive Bayes          | ✓                | ✓            | ✓                 |
 | K-Means                       | ✓                | ✓            | ✓                 |
@@ -74,6 +74,11 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 #### [Gaussian Naive Bayes](criterion/Gaussian%20Naive%20Bayes/report/index.html)
 
 ![](criterion/Gaussian%20Naive%20Bayes/report/violin.svg)
+
+#### [Support Vector Classification](criterion/Support%20Vector%20Classification/report/index.html)
+
+![](criterion/Support%20Vector%20Classification/report/violin.svg)
+
 
 
 ### Clustering
