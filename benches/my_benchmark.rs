@@ -86,7 +86,7 @@ fn kmeans_clustering_benchmark(c: &mut Criterion) {
 fn dbscan_clustering_benchmark(c: &mut Criterion) {
     let plot_config = PlotConfiguration::default().summary_scale(AxisScale::Logarithmic);
     let mut bm = c.benchmark_group("DBSCAN Clustering");
-    // bm.plot_config(plot_config);
+    bm.plot_config(plot_config);
     bm.bench_function("Smartcore", |b| {
         let x =
             smartcore_vs_linfa::get_smartcore_clustering_data(&smartcore_vs_linfa::TestSize::Small);
