@@ -5,17 +5,15 @@ use smartcore_vs_linfa::TestSize;
 
 // A benchmark function for linear regression
 fn linear_regression_benchmark(c: &mut Criterion) {
-    let mut bm = c.benchmark_group("Linear Regression");    bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
+    let mut bm = c.benchmark_group("Linear Regression");
+    bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
-
         bm.bench_function(format!("{}/Smart", test_size), |b| {
-            let (x, y) =
-                smartcore_vs_linfa::get_smartcore_regression_data(test_size);
+            let (x, y) = smartcore_vs_linfa::get_smartcore_regression_data(test_size);
             b.iter(|| smartcore_vs_linfa::smartcore_linear_regression(black_box(&x), black_box(&y)))
         });
         bm.bench_function(format!("{}/Linfa", test_size), |b| {
-            let dataset =
-                smartcore_vs_linfa::get_linfa_regression_data(test_size);
+            let dataset = smartcore_vs_linfa::get_linfa_regression_data(test_size);
             b.iter(|| smartcore_vs_linfa::linfa_linear_regression(black_box(&dataset)))
         });
     }
@@ -27,13 +25,13 @@ fn elasticnet_regression_benchmark(c: &mut Criterion) {
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
-            let (x, y) =
-                smartcore_vs_linfa::get_smartcore_regression_data(test_size);
-            b.iter(|| smartcore_vs_linfa::smartcore_elasticnet_regression(black_box(&x), black_box(&y)))
+            let (x, y) = smartcore_vs_linfa::get_smartcore_regression_data(test_size);
+            b.iter(|| {
+                smartcore_vs_linfa::smartcore_elasticnet_regression(black_box(&x), black_box(&y))
+            })
         });
         bm.bench_function(format!("{}/Linfa", test_size), |b| {
-            let dataset =
-                smartcore_vs_linfa::get_linfa_regression_data(test_size);
+            let dataset = smartcore_vs_linfa::get_linfa_regression_data(test_size);
             b.iter(|| smartcore_vs_linfa::linfa_elasticnet_regression(black_box(&dataset)))
         });
     }
@@ -45,14 +43,13 @@ fn logistic_regression_benchmark(c: &mut Criterion) {
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
-            let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(
-                test_size,
-            );
-            b.iter(|| smartcore_vs_linfa::smartcore_logistic_regression(black_box(&x), black_box(&y)))
+            let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(test_size);
+            b.iter(|| {
+                smartcore_vs_linfa::smartcore_logistic_regression(black_box(&x), black_box(&y))
+            })
         });
         bm.bench_function(format!("{}/Linfa", test_size), |b| {
-            let dataset =
-                smartcore_vs_linfa::get_linfa_classification_data(test_size);
+            let dataset = smartcore_vs_linfa::get_linfa_classification_data(test_size);
             b.iter(|| smartcore_vs_linfa::linfa_logistic_regression(black_box(&dataset)))
         });
     }
@@ -64,17 +61,30 @@ fn decision_tree_classifier_benchmark(c: &mut Criterion) {
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
-            let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(
-                test_size,
-            );
+            let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(test_size);
             b.iter(|| {
                 smartcore_vs_linfa::smartcore_decision_tree_classifier(black_box(&x), black_box(&y))
             })
         });
         bm.bench_function(format!("{}/Linfa", test_size), |b| {
-            let dataset =
-                smartcore_vs_linfa::get_linfa_classification_data(test_size);
+            let dataset = smartcore_vs_linfa::get_linfa_classification_data(test_size);
             b.iter(|| smartcore_vs_linfa::linfa_decision_tree_classifier(black_box(&dataset)))
+        });
+    }
+}
+
+// A benchmark function for logistic regression
+fn gnb_benchmark(c: &mut Criterion) {
+    let mut bm = c.benchmark_group("Gaussian Naive Bayes");
+    bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
+    for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
+        bm.bench_function(format!("{}/Smart", test_size), |b| {
+            let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(test_size);
+            b.iter(|| smartcore_vs_linfa::smartcore_gnb_classifier(black_box(&x), black_box(&y)))
+        });
+        bm.bench_function(format!("{}/Linfa", test_size), |b| {
+            let dataset = smartcore_vs_linfa::get_linfa_classification_data(test_size);
+            b.iter(|| smartcore_vs_linfa::linfa_gnb_classifier(black_box(&dataset)))
         });
     }
 }
@@ -101,8 +111,7 @@ fn dbscan_clustering_benchmark(c: &mut Criterion) {
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
-            let x =
-                smartcore_vs_linfa::get_smartcore_unsupervised_data(test_size);
+            let x = smartcore_vs_linfa::get_smartcore_unsupervised_data(test_size);
             b.iter(|| smartcore_vs_linfa::smartcore_dbscan(black_box(&x)))
         });
         bm.bench_function(format!("{}/Linfa", test_size), |b| {
@@ -112,15 +121,13 @@ fn dbscan_clustering_benchmark(c: &mut Criterion) {
     }
 }
 
-
 // A benchmark function for kmeans clustering
 fn pca_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("PCA");
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
     for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
-            let x =
-                smartcore_vs_linfa::get_smartcore_unsupervised_data(test_size);
+            let x = smartcore_vs_linfa::get_smartcore_unsupervised_data(test_size);
             b.iter(|| smartcore_vs_linfa::smartcore_pca(black_box(&x)))
         });
         bm.bench_function(format!("{}/Linfa", test_size), |b| {
@@ -137,6 +144,7 @@ criterion_group!(
     elasticnet_regression_benchmark,
     logistic_regression_benchmark,
     decision_tree_classifier_benchmark,
+    gnb_benchmark,
     kmeans_clustering_benchmark,
     dbscan_clustering_benchmark,
     pca_benchmark,
