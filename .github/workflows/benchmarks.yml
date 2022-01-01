@@ -10,22 +10,14 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  check_and_test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: install dependencies
-        run: sudo apt-get install libopenblas-dev gfortran
-      - name: check
-        run: cargo check
-      - name: test
-        run: cargo test
   benchmark:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: install dependencies
         run: sudo apt-get install libopenblas-dev gfortran
+      - name: run a check
+        run: cargo check
       - name: run the benchmark
         run: cargo bench --verbose
       - name: move new files to criterion folder

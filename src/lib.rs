@@ -9,3 +9,6 @@ pub use clustering::*;
 
 mod regression;
 pub use regression::*;
+
+mod dimensionality_reduction;
+pub use dimensionality_reduction::*;

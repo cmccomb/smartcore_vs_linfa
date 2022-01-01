@@ -55,3 +55,7 @@ Since the two implementations use different convergence criteria, the number of 
 #### DBSCAN
 
 ![](criterion/DBSCAN%20Clustering/report/violin.svg)
+
+### Clustering
+#### PCA
+![](criterion/PCA/report/violin.svg)
