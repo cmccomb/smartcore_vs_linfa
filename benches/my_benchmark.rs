@@ -94,8 +94,6 @@ fn dbscan_clustering_benchmark(c: &mut Criterion) {
         b.iter(|| smartcore_vs_linfa::smartcore_dbscan(black_box(&x)))
     });
     bm.bench_function("Linfa", |b| {
-        // let dataset =
-        //     smartcore_vs_linfa::get_linfa_clustering_data(&smartcore_vs_linfa::TestSize::Small);
         let dataset = smartcore_vs_linfa::x_clustering(&smartcore_vs_linfa::TestSize::Small);
         b.iter(|| smartcore_vs_linfa::linfa_dbscan(black_box(&dataset)))
     });
