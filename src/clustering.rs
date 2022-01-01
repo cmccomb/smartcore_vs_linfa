@@ -62,8 +62,8 @@ pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
 
 /// Run linfa DBSCAN
 /// ```
-/// use smartcore_vs_linfa::{get_linfa_unsupervised_data, linfa_dbscan, TestSize};
-/// linfa_dbscan(&get_linfa_unsupervised_data(&TestSize::Small));
+/// use smartcore_vs_linfa::{linfa_dbscan, TestSize, x_unsupervised};
+/// linfa_dbscan(&x_unsupervised(&TestSize::Small));
 /// ```
 pub fn linfa_dbscan(dataset: &Array2<f64>) {
     LinfaDbscan::params(5).transform(dataset);
