@@ -26,8 +26,8 @@ pub fn dataset_to_unsupervised_array(dataset: SCDataset<f32, f32>) -> Array2<f64
         (dataset.num_samples, dataset.num_features),
         dataset.data.iter().map(|elem| *elem as f64).collect(),
     )
-        .unwrap()
-        .to_owned()
+    .unwrap()
+    .to_owned()
 }
 
 pub fn get_smartcore_unsupervised_data(size: &TestSize) -> DenseMatrix<f64> {
@@ -39,14 +39,13 @@ pub fn get_linfa_unsupervised_data(size: &TestSize) -> Dataset<f64, ()> {
     Dataset::from(x_unsupervised(size).to_owned())
 }
 
-
 /// Run linfa kmeans
 /// ```
 /// use smartcore_vs_linfa::{get_linfa_unsupervised_data, linfa_kmeans, TestSize};
 /// linfa_kmeans(&get_linfa_unsupervised_data(&TestSize::Small));
 /// ```
 pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
-    let _model = LinfaKMeans::params(5)
+    LinfaKMeans::params(5)
         .max_n_iterations(10)
         .n_runs(1)
         .fit(dataset);
@@ -67,7 +66,7 @@ pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
 /// linfa_dbscan(&get_linfa_unsupervised_data(&TestSize::Small));
 /// ```
 pub fn linfa_dbscan(dataset: &Array2<f64>) {
-    let _model = LinfaDbscan::params(5).transform(dataset);
+    LinfaDbscan::params(5).transform(dataset);
 }
 
 /// Run smartcore dbscan
@@ -75,7 +74,7 @@ pub fn linfa_dbscan(dataset: &Array2<f64>) {
 /// use smartcore_vs_linfa::{get_smartcore_unsupervised_data, smartcore_dbscan, TestSize};
 /// smartcore_dbscan(&get_smartcore_unsupervised_data(&TestSize::Small));
 /// ```
-pub fn smartcore_dbscan(x: &DenseMatrix<f64>)  {
+pub fn smartcore_dbscan(x: &DenseMatrix<f64>) {
     SCDBSCAN::fit(
         x,
         DBSCANParameters::default()

@@ -1,4 +1,5 @@
 use linfa::prelude::*;
+use linfa_bayes::GaussianNb as LinfaGaussianNb;
 use linfa_logistic::{FittedLogisticRegression, LogisticRegression as LinfaLogisticRegression};
 use linfa_trees::{DecisionTree as LinfaDecisionTree, DecisionTree, SplitQuality};
 use ndarray::{Array1, Array2};
@@ -7,6 +8,7 @@ use smartcore::{
     dataset::{generator::make_blobs, Dataset as SCDataset},
     linalg::naive::dense_matrix::DenseMatrix,
     linear::logistic_regression::LogisticRegression as SCLogisticRegression,
+    naive_bayes::gaussian::{GaussianNB as SCGaussianNB, GaussianNBParameters},
     tree::decision_tree_classifier::{
         DecisionTreeClassifier, DecisionTreeClassifierParameters, SplitCriterion,
     },
@@ -30,8 +32,8 @@ pub fn dataset_to_classification_array(
             (dataset.num_samples, dataset.num_features),
             dataset.data.iter().map(|elem| *elem as f64).collect(),
         )
-            .unwrap()
-            .to_owned(),
+        .unwrap()
+        .to_owned(),
         Array1::from_vec(dataset.target.iter().map(|elem| *elem as usize).collect()).to_owned(),
     )
 }
@@ -55,10 +57,7 @@ pub fn get_linfa_classification_data(size: &TestSize) -> Dataset<f64, usize> {
 /// let (x, y) = get_smartcore_classification_data(&TestSize::Small);
 /// smartcore_logistic_regression(&x, &y);
 /// ```
-pub fn smartcore_logistic_regression(
-    x: &DenseMatrix<f64>,
-    y: &Vec<f64>,
-)  {
+pub fn smartcore_logistic_regression(x: &DenseMatrix<f64>, y: &Vec<f64>) {
     SCLogisticRegression::fit(x, y, Default::default());
 }
 
@@ -67,9 +66,7 @@ pub fn smartcore_logistic_regression(
 /// use smartcore_vs_linfa::{get_linfa_classification_data, linfa_logistic_regression, TestSize};
 /// linfa_logistic_regression(&get_linfa_classification_data(&TestSize::Small));
 /// ```
-pub fn linfa_logistic_regression(
-    dataset: &Dataset<f64, usize>,
-) {
+pub fn linfa_logistic_regression(dataset: &Dataset<f64, usize>) {
     LinfaLogisticRegression::default()
         .gradient_tolerance(1e-8)
         .max_iterations(1000)
@@ -82,10 +79,7 @@ pub fn linfa_logistic_regression(
 /// let (x, y) = get_smartcore_classification_data(&TestSize::Small);
 /// smartcore_decision_tree_classifier(&x, &y);
 /// ```
-pub fn smartcore_decision_tree_classifier(
-    x: &DenseMatrix<f64>,
-    y: &Vec<f64>,
-) {
+pub fn smartcore_decision_tree_classifier(x: &DenseMatrix<f64>, y: &Vec<f64>) {
     DecisionTreeClassifier::fit(
         x,
         y,
@@ -109,4 +103,23 @@ pub fn linfa_decision_tree_classifier(dataset: &Dataset<f64, usize>) {
         .min_weight_split(1.0)
         .min_weight_leaf(1.0)
         .fit(dataset);
+}
+
+/// gaussian naive bayes smartcore
+/// ```
+/// use smartcore_vs_linfa::{get_smartcore_classification_data, smartcore_gnb_classifier, TestSize};
+/// let (x, y) = get_smartcore_classification_data(&TestSize::Small);
+/// smartcore_gnb_classifier(&x, &y);
+/// ```
+pub fn smartcore_gnb_classifier(x: &DenseMatrix<f64>, y: &Vec<f64>) {
+    SCGaussianNB::fit(x, y, GaussianNBParameters::default());
+}
+
+/// gaussian naive bayes linfa
+/// ```
+/// use smartcore_vs_linfa::{get_linfa_classification_data, linfa_gnb_classifier, TestSize};
+/// linfa_gnb_classifier(&get_linfa_classification_data(&TestSize::Small));
+/// ```
+pub fn linfa_gnb_classifier(dataset: &Dataset<f64, usize>) {
+    LinfaGaussianNb::params().fit(dataset);
 }

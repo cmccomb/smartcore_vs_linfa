@@ -7,10 +7,33 @@
 ## About
 [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/) as two heavy hitters have emerged as two leading `scikit-learn`-analogous machine learning frameworks for rust. Both provide access to a number of bread-and-butter algorithms that form the backbone of machine learning analysis. This repository provides a comparison between the training time of algorithms in these two machine learning frameworks. The algorithms included are shown below
 
-| Algorithm         | Smartcore          | Linfa              | Benchmarked?       |
-|:------------------|:-------------------|:-------------------|:-------------------|
-| Linear Regression | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| Elastic Net       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| Algorithm                     | Smartcore v2.0.0 | Linfa v5.0.0 | Benchmarked here? |
+|:------------------------------|:-----------------|:-------------|:------------------|
+| Linear Regression             | ✓                | ✓            | ✓                 |
+| Ridge Regression              | ✓                |              |                   |
+| LASSO Regression              | ✓                |              |                   |
+| Decision Tree Regression      | ✓                |              |                   |
+| Random Forest Regression      | ✓                |              |                   |
+| Support Vector Regression     | ✓                | ✓            |                   |
+| KNN Regression                | ✓                |              |                   |
+| Elastic Net Regression        | ✓                | ✓            | ✓                 |
+| Partial Least Squares         |                  | ✓            |                   |
+| Logistic Regression           | ✓                | ✓            | ✓                 |
+| Decision Tree Classification  | ✓                | ✓            | ✓                 |
+| Random Forest Classification  | ✓                |              |                   |
+| Support Vector Classification | ✓                | ✓            |                   |
+| KNN Classification            | ✓                |              |                   |
+| Gaussian Naive Bayes          | ✓                | ✓            | ✓                 |
+| K-Means                       | ✓                | ✓            | ✓                 |
+| DBSCAN                        | ✓                | ✓            | ✓                 |
+| Hierarchical Clustering       |                  | ✓            |                   |
+| Approximated DBSCAN           |                  | ✓            |                   |
+| Gaussian Mixture Model        |                  | ✓            |                   |
+| PCA                           | ✓                | ✓            | ✓                 |
+| ICA                           |                  | ✓            |                   |
+| SVD                           | ✓                |              |                   |
+| t-SNE                         |                  | ✓            |                   |
+| Diffusion Mapping             |                  | ✓            |                   |
 
 The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
 
@@ -48,6 +71,10 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 
 ![](criterion/Decision%20Tree%20Classification/report/violin.svg)
 
+#### [Gaussian Naive Bayes](criterion/Gaussian%20Naive%20Bayes/report/index.html)
+
+![](criterion/Gaussian%20Naive%20Bayes/report/violin.svg)
+
 
 ### Clustering
 #### [K-Means](criterion/K-Means%20Clustering/report/index.html)
@@ -63,6 +90,6 @@ Since the two implementations use different convergence criteria, the number of 
 
 ![](criterion/DBSCAN%20Clustering/report/violin.svg)
 
-### Clustering
+### Dimensionality Reduction
 #### [PCA](criterion/PCA/report/index.html)
 ![](criterion/PCA/report/violin.svg)
