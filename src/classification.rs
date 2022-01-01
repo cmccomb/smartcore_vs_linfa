@@ -46,9 +46,9 @@ use super::TestSize;
 
 pub fn xy_classification(size: &TestSize) -> (Array2<f64>, Array1<usize>) {
     match size {
-        TestSize::Small => dataset_to_classification_array(make_blobs(100, 10, 5)),
-        TestSize::Medium => dataset_to_classification_array(make_blobs(1000, 50, 10)),
-        TestSize::Large => dataset_to_classification_array(make_blobs(10000, 100, 20)),
+        TestSize::Small => dataset_to_classification_array(make_blobs(100, 10, 2)),
+        TestSize::Medium => dataset_to_classification_array(make_blobs(1000, 50, 2)),
+        TestSize::Large => dataset_to_classification_array(make_blobs(10000, 100, 2)),
     }
 }
 
