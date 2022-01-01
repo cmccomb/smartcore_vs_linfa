@@ -5,7 +5,14 @@
 </div>
 
 ## About
-Two heavy hitters have emerged in terms of `scikit-learn` analogous machine learning frameworks for rust: [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/). Both provide access to a number of bread-and-butter algorithms that form the backbone of many analyses. This repository provides a comparison between the execution time of algorithms in these two machine learning frameworks. The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
+[`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/) as two heavy hitters have emerged as two leading `scikit-learn`-analogous machine learning frameworks for rust. Both provide access to a number of bread-and-butter algorithms that form the backbone of machine learning analysis. This repository provides a comparison between the training time of algorithms in these two machine learning frameworks. The algorithms included are shown below
+
+| Algorithm         | Smartcore          | Linfa              | Benchmarked?       |
+|:------------------|:-------------------|:-------------------|:-------------------|
+| Linear Regression | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| Elastic Net       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+
+The full report is available [here](criterion/report/index.html), but summary violin plots are provided below.
 
 ## Considerations Besides Execution Time
 Over the process of creating this benchmark study, a few additional differences between the libraries emerged.
@@ -18,17 +25,17 @@ While `linfa` requires a BLAS/LAPACK backend (either `openblas`, `netblas`, or `
 
 ## Results
 ### Regression
-#### Linear Regression
+#### [Linear Regression](criterion/Linear%20Regression/report/index.html)
 _No customization needed to equate algorithms._
 
 ![](criterion/Linear%20Regression/report/violin.svg)
 
-#### Elastic Net
+#### [Elastic Net](criterion/Elastic%20Net/report/index.html)
 
 ![](criterion/Elastic%20Net/report/violin.svg)
 
 ### Classification
-#### Logistic Regression
+#### [Logistic Regression](criterion/Logistic%20Regression/report/index.html)
 
 The `smartcore` implementation has no parameters, but the `linfa` settings were modified to align it with `smartcore` defaults:
 
@@ -37,13 +44,13 @@ The `smartcore` implementation has no parameters, but the `linfa` settings were 
 
 ![](criterion/Logistic%20Regression/report/violin.svg)
 
-#### Decision Tree
+#### [Decision Tree](criterion/Decision%20Tree%20Classification/report/index.html)
 
 ![](criterion/Decision%20Tree%20Classification/report/violin.svg)
 
 
 ### Clustering
-#### K-Means
+#### [K-Means](criterion/K-Means%20Clustering/report/index.html)
 
 Since the two implementations use different convergence criteria, the number of max iterations was equated at a low value, and only 1 run of the `linfa` algorithm was permitted:
 
@@ -52,10 +59,10 @@ Since the two implementations use different convergence criteria, the number of 
 
 ![](criterion/K-Means%20Clustering/report/violin.svg)
 
-#### DBSCAN
+#### [DBSCAN](criterion/DBSCAN%20Clustering/report/index.html)
 
 ![](criterion/DBSCAN%20Clustering/report/violin.svg)
 
 ### Clustering
-#### PCA
+#### [PCA](criterion/PCA/report/index.html)
 ![](criterion/PCA/report/violin.svg)

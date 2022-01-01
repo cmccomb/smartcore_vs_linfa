@@ -31,12 +31,12 @@ pub fn dataset_to_unsupervised_array(dataset: SCDataset<f32, f32>) -> Array2<f64
 }
 
 pub fn get_smartcore_unsupervised_data(size: &TestSize) -> DenseMatrix<f64> {
-    let x = x_clustering(size).to_owned();
+    let x = x_unsupervised(size).to_owned();
     DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap())
 }
 
 pub fn get_linfa_unsupervised_data(size: &TestSize) -> Dataset<f64, ()> {
-    Dataset::from(x_clustering(size).to_owned())
+    Dataset::from(x_unsupervised(size).to_owned())
 }
 
 
