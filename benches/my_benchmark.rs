@@ -41,7 +41,7 @@ fn elasticnet_regression_benchmark(c: &mut Criterion) {
 fn svr_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Support Vector Regression");
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
-    for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
+    for test_size in [TestSize::Small, TestSize::Medium].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
             let (x, y) = smartcore_vs_linfa::get_smartcore_regression_data(test_size);
             b.iter(|| smartcore_vs_linfa::smartcore_svm_regression(black_box(&x), black_box(&y)))
@@ -109,7 +109,7 @@ fn gnb_benchmark(c: &mut Criterion) {
 fn svc_benchmark(c: &mut Criterion) {
     let mut bm = c.benchmark_group("Support Vector Classification");
     bm.plot_config(PlotConfiguration::default().summary_scale(AxisScale::Logarithmic));
-    for test_size in [TestSize::Small, TestSize::Medium, TestSize::Large].iter() {
+    for test_size in [TestSize::Small, TestSize::Medium].iter() {
         bm.bench_function(format!("{}/Smart", test_size), |b| {
             let (x, y) = smartcore_vs_linfa::get_smartcore_classification_data(test_size);
             b.iter(|| smartcore_vs_linfa::smartcore_svm_classifier(black_box(&x), black_box(&y)))
