@@ -4,6 +4,7 @@ use linfa_linear::LinearRegression as LinfaLinearRegression;
 use linfa_svm::Svm as LinfaSvm;
 
 use ndarray::{Array1, Array2, Ix1};
+use once_cell::sync::Lazy;
 use smartcore::{
     dataset::Dataset as SCDataset,
     linalg::basic::matrix::DenseMatrix,
@@ -16,18 +17,11 @@ use smartcore::{
         Kernels,
     },
 };
+use std::collections::HashMap;
 
 use super::make_regression;
 use super::TestSize;
 use crate::array2_to_dense_matrix;
-
-pub fn xy_regression(size: &TestSize) -> (Array2<f64>, Array1<f64>) {
-    match size {
-        TestSize::Small => dataset_to_regression_array(make_regression(100, 10, 1.0)),
-        TestSize::Medium => dataset_to_regression_array(make_regression(1000, 50, 1.0)),
-        TestSize::Large => dataset_to_regression_array(make_regression(10000, 100, 1.0)),
-    }
-}
 
 pub fn dataset_to_regression_array(dataset: SCDataset<f32, f32>) -> (Array2<f64>, Array1<f64>) {
     (
@@ -39,6 +33,37 @@ pub fn dataset_to_regression_array(dataset: SCDataset<f32, f32>) -> (Array2<f64>
         .to_owned(),
         Array1::from_vec(dataset.target.iter().map(|elem| *elem as f64).collect()).to_owned(),
     )
+}
+
+type RegressionData = (Array2<f64>, Array1<f64>);
+type RegressionCache = HashMap<TestSize, RegressionData>;
+
+static REGRESSION_DATA_CACHE: Lazy<RegressionCache> = Lazy::new(|| {
+    HashMap::from([
+        (
+            TestSize::Small,
+            dataset_to_regression_array(make_regression(100, 10, 1.0)),
+        ),
+        (
+            TestSize::Medium,
+            dataset_to_regression_array(make_regression(1000, 50, 1.0)),
+        ),
+        (
+            TestSize::Large,
+            dataset_to_regression_array(make_regression(10000, 100, 1.0)),
+        ),
+    ])
+});
+
+fn regression_cache(size: &TestSize) -> &'static RegressionData {
+    REGRESSION_DATA_CACHE
+        .get(size)
+        .expect("regression data cache is populated for all test sizes")
+}
+
+pub fn xy_regression(size: &TestSize) -> (Array2<f64>, Array1<f64>) {
+    let (x, y) = regression_cache(size);
+    (x.clone(), y.clone())
 }
 
 pub fn get_smartcore_regression_data(size: &TestSize) -> (DenseMatrix<f64>, Vec<f64>) {
