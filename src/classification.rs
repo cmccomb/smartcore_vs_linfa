@@ -4,6 +4,7 @@ use linfa_logistic::LogisticRegression as LinfaLogisticRegression;
 use linfa_svm::Svm as LinfaSvm;
 use linfa_trees::{DecisionTree as LinfaDecisionTree, SplitQuality};
 use ndarray::{Array1, Array2, Ix1};
+use once_cell::sync::Lazy;
 use smartcore::{
     dataset::{generator::make_blobs, Dataset as SCDataset},
     linalg::basic::matrix::DenseMatrix,
@@ -17,17 +18,10 @@ use smartcore::{
         DecisionTreeClassifier, DecisionTreeClassifierParameters, SplitCriterion,
     },
 };
+use std::collections::HashMap;
 
 use super::TestSize;
 use crate::array2_to_dense_matrix;
-
-pub fn xy_classification(size: &TestSize) -> (Array2<f64>, Array1<usize>) {
-    match size {
-        TestSize::Small => dataset_to_classification_array(make_blobs(100, 10, 2)),
-        TestSize::Medium => dataset_to_classification_array(make_blobs(1000, 50, 2)),
-        TestSize::Large => dataset_to_classification_array(make_blobs(10000, 100, 2)),
-    }
-}
 
 pub fn dataset_to_classification_array(
     dataset: SCDataset<f32, f32>,
@@ -43,6 +37,37 @@ pub fn dataset_to_classification_array(
     )
 }
 
+type ClassificationData = (Array2<f64>, Array1<usize>);
+type ClassificationCache = HashMap<TestSize, ClassificationData>;
+
+static CLASSIFICATION_DATA_CACHE: Lazy<ClassificationCache> = Lazy::new(|| {
+    HashMap::from([
+        (
+            TestSize::Small,
+            dataset_to_classification_array(make_blobs(100, 10, 2)),
+        ),
+        (
+            TestSize::Medium,
+            dataset_to_classification_array(make_blobs(1000, 50, 2)),
+        ),
+        (
+            TestSize::Large,
+            dataset_to_classification_array(make_blobs(10000, 100, 2)),
+        ),
+    ])
+});
+
+fn classification_cache(size: &TestSize) -> &'static ClassificationData {
+    CLASSIFICATION_DATA_CACHE
+        .get(size)
+        .expect("classification data cache is populated for all test sizes")
+}
+
+pub fn xy_classification(size: &TestSize) -> (Array2<f64>, Array1<usize>) {
+    let (x, y) = classification_cache(size);
+    (x.clone(), y.clone())
+}
+
 pub fn get_smartcore_classification_data(size: &TestSize) -> (DenseMatrix<f64>, Vec<u32>) {
     let (x, y) = xy_classification(size);
     let dense = array2_to_dense_matrix(&x).expect("valid dense matrix conversion");
@@ -56,7 +81,7 @@ pub fn get_linfa_classification_data(size: &TestSize) -> Dataset<f64, usize, Ix1
 
 pub fn get_linfa_classification_data_as_bool(size: &TestSize) -> Dataset<f64, bool, Ix1> {
     let (x, y) = xy_classification(size);
-    let ybool: Array1<bool> = y.iter().map(|elem| *elem == 1).collect();
+    let ybool = y.mapv(|elem| elem == 1);
     Dataset::new(x, ybool)
 }
 

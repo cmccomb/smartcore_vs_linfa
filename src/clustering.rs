@@ -1,6 +1,7 @@
 use linfa::prelude::*;
 use linfa_clustering::{Dbscan as LinfaDbscan, KMeans as LinfaKMeans};
 use ndarray::{Array2, Ix1};
+use once_cell::sync::Lazy;
 use smartcore::{
     cluster::{
         dbscan::{DBSCANParameters, DBSCAN as SCDBSCAN},
@@ -10,17 +11,10 @@ use smartcore::{
     linalg::basic::matrix::DenseMatrix,
     metrics::distance::euclidian::Euclidian,
 };
+use std::collections::HashMap;
 
 use super::TestSize;
 use crate::array2_to_dense_matrix;
-
-pub fn x_unsupervised(size: &TestSize) -> Array2<f64> {
-    match size {
-        TestSize::Small => dataset_to_unsupervised_array(make_blobs(100, 10, 5)),
-        TestSize::Medium => dataset_to_unsupervised_array(make_blobs(1000, 50, 10)),
-        TestSize::Large => dataset_to_unsupervised_array(make_blobs(10000, 100, 20)),
-    }
-}
 
 pub fn dataset_to_unsupervised_array(dataset: SCDataset<f32, f32>) -> Array2<f64> {
     Array2::from_shape_vec(
@@ -31,13 +25,42 @@ pub fn dataset_to_unsupervised_array(dataset: SCDataset<f32, f32>) -> Array2<f64
     .to_owned()
 }
 
+type UnsupervisedCache = HashMap<TestSize, Array2<f64>>;
+
+static UNSUPERVISED_DATA_CACHE: Lazy<UnsupervisedCache> = Lazy::new(|| {
+    HashMap::from([
+        (
+            TestSize::Small,
+            dataset_to_unsupervised_array(make_blobs(100, 10, 5)),
+        ),
+        (
+            TestSize::Medium,
+            dataset_to_unsupervised_array(make_blobs(1000, 50, 10)),
+        ),
+        (
+            TestSize::Large,
+            dataset_to_unsupervised_array(make_blobs(10000, 100, 20)),
+        ),
+    ])
+});
+
+fn unsupervised_cache(size: &TestSize) -> &'static Array2<f64> {
+    UNSUPERVISED_DATA_CACHE
+        .get(size)
+        .expect("unsupervised data cache is populated for all test sizes")
+}
+
+pub fn x_unsupervised(size: &TestSize) -> Array2<f64> {
+    unsupervised_cache(size).clone()
+}
+
 pub fn get_smartcore_unsupervised_data(size: &TestSize) -> DenseMatrix<f64> {
-    let x = x_unsupervised(size).to_owned();
+    let x = x_unsupervised(size);
     array2_to_dense_matrix(&x).expect("valid dense matrix conversion")
 }
 
 pub fn get_linfa_unsupervised_data(size: &TestSize) -> Dataset<f64, (), Ix1> {
-    Dataset::from(x_unsupervised(size).to_owned())
+    Dataset::from(x_unsupervised(size))
 }
 
 /// Run linfa kmeans

@@ -1,5 +1,6 @@
 use std::fmt::{Display, Formatter};
 
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum TestSize {
     Small,
     Medium,
