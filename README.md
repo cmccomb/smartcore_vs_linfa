@@ -46,6 +46,9 @@ The documentation for `smartcore` is a bit more consistent across algorithms. Th
 ### Dependencies
 While `linfa` requires a BLAS/LAPACK backend (either `openblas`, `netblas`, or `intel-mkl`), `smartcore` does not. This allows `linfa` to take advantage of some additional optimization, but it limits portability.
 
+### Dataset Determinism
+Benchmark datasets are now generated from deterministic random seeds that pair each [`TestSize`](https://docs.rs/smartcore_vs_linfa/latest/smartcore_vs_linfa/enum.TestSize.html) with a scenario (`regression`, `classification`, or `clustering`). This ensures that all cached helpers (`xy_regression`, `xy_classification`, and `x_unsupervised`) draw from reproducible inputs across runs, aligning the smartcore and linfa comparisons.
+
 ## Results
 ### Regression
 #### [Linear Regression](criterion/Linear%20Regression/report/index.html)

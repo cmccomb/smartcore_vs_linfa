@@ -7,6 +7,10 @@ use smartcore::{
 };
 
 /// Run linfa pca
+///
+/// # Panics
+///
+/// Panics if Linfa PCA fails to converge for the supplied dataset.
 /// ```
 /// use smartcore_vs_linfa::{get_linfa_unsupervised_data, linfa_pca, TestSize};
 /// linfa_pca(&get_linfa_unsupervised_data(&TestSize::Small));
@@ -16,6 +20,10 @@ pub fn linfa_pca(dataset: &Dataset<f64, (), Ix1>) {
 }
 
 /// Run smartcore pca
+///
+/// # Panics
+///
+/// Panics if `SmartCore` PCA fails to converge for the supplied dataset.
 /// ```
 /// use smartcore_vs_linfa::{get_smartcore_unsupervised_data, smartcore_pca, TestSize};
 /// smartcore_pca(&get_smartcore_unsupervised_data(&TestSize::Small));
