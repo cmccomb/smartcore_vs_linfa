@@ -4,22 +4,22 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-smartcore = "*"
-linfa = {version="*", features=["openblas-static"]}
-linfa-linear = "*"
-linfa-logistic = "*"
-linfa-clustering = "*"
-linfa-elasticnet = "*"
-linfa-trees = "*"
-linfa-reduction = "*"
-linfa-bayes = "*"
-linfa-svm = "*"
-ndarray = "0.15.4"
-rand = "0.8.4"
-rand_distr = "0.4.2"
+smartcore = { version = "0.4.2", features = ["datasets"] }
+linfa = "0.7.1"
+linfa-linear = "0.7.1"
+linfa-logistic = "0.7.1"
+linfa-clustering = "0.7.1"
+linfa-elasticnet = "0.7.1"
+linfa-trees = "0.7.1"
+linfa-reduction = "0.7.1"
+linfa-bayes = "0.7.1"
+linfa-svm = "0.7.1"
+ndarray = "0.15.6"
+rand = "0.8.5"
+rand_distr = "0.4.3"
 
 [dev-dependencies]
-criterion = {version="0.3", features=["html_reports"]}
+criterion = { version = "0.7.0", features = ["html_reports"] }
 
 [[bench]]
 name = "my_benchmark"

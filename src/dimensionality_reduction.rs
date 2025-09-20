@@ -1,18 +1,18 @@
 use linfa::prelude::*;
-use linfa_reduction::{Pca as LinfaPca};
+use linfa_reduction::Pca as LinfaPca;
+use ndarray::Ix1;
 use smartcore::{
-    linalg::naive::dense_matrix::DenseMatrix,
-    decomposition::pca::{PCA as SCPCA, PCAParameters},
+    decomposition::pca::{PCAParameters, PCA as SCPCA},
+    linalg::basic::matrix::DenseMatrix,
 };
-
 
 /// Run linfa pca
 /// ```
 /// use smartcore_vs_linfa::{get_linfa_unsupervised_data, linfa_pca, TestSize};
 /// linfa_pca(&get_linfa_unsupervised_data(&TestSize::Small));
 /// ```
-pub fn linfa_pca(dataset: &Dataset<f64, ()>) {
-    LinfaPca::params(3).fit(dataset);
+pub fn linfa_pca(dataset: &Dataset<f64, (), Ix1>) {
+    LinfaPca::params(3).fit(dataset).unwrap();
 }
 
 /// Run smartcore pca
@@ -21,5 +21,5 @@ pub fn linfa_pca(dataset: &Dataset<f64, ()>) {
 /// smartcore_pca(&get_smartcore_unsupervised_data(&TestSize::Small));
 /// ```
 pub fn smartcore_pca(x: &DenseMatrix<f64>) {
-    SCPCA::fit(x, PCAParameters::default().with_n_components(3));
+    SCPCA::fit(x, PCAParameters::default().with_n_components(3)).unwrap();
 }

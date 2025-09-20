@@ -7,7 +7,7 @@
 ## About
 [`linfa`](https://rust-ml.github.io/linfa/) and [`smartcore`](https://smartcorelib.org/) have emerged as two leading `scikit-learn`-analogous machine learning frameworks for Rust. Both provide access to a number of algorithms that form the backbone of machine learning analysis. This repository provides a comparison between the training time of algorithms in these two machine learning frameworks. The algorithms included are:
 
-| Algorithm                     | Smartcore v2.0.0 | Linfa v5.0.0 | Benchmarked here? |
+| Algorithm                     | Smartcore v0.4.2 | Linfa v0.7.1 | Benchmarked here? |
 |:------------------------------|:-----------------|:-------------|:------------------|
 | Linear Regression             | ✓                | ✓            | ✓                 |
 | Ridge Regression              | ✓                |              |                   |
