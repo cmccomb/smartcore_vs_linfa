@@ -1,17 +1,18 @@
 use linfa::prelude::*;
 use linfa_clustering::{Dbscan as LinfaDbscan, KMeans as LinfaKMeans};
-use ndarray::Array2;
+use ndarray::{Array2, Ix1};
 use smartcore::{
     cluster::{
         dbscan::{DBSCANParameters, DBSCAN as SCDBSCAN},
         kmeans::{KMeans as SCKMeans, KMeansParameters},
     },
     dataset::{generator::make_blobs, Dataset as SCDataset},
-    linalg::naive::dense_matrix::DenseMatrix,
-    math::distance::euclidian::Euclidian,
+    linalg::basic::matrix::DenseMatrix,
+    metrics::distance::euclidian::Euclidian,
 };
 
 use super::TestSize;
+use crate::array2_to_dense_matrix;
 
 pub fn x_unsupervised(size: &TestSize) -> Array2<f64> {
     match size {
@@ -32,10 +33,10 @@ pub fn dataset_to_unsupervised_array(dataset: SCDataset<f32, f32>) -> Array2<f64
 
 pub fn get_smartcore_unsupervised_data(size: &TestSize) -> DenseMatrix<f64> {
     let x = x_unsupervised(size).to_owned();
-    DenseMatrix::from_array(x.shape()[0], x.shape()[1], x.as_slice().unwrap())
+    array2_to_dense_matrix(&x).expect("valid dense matrix conversion")
 }
 
-pub fn get_linfa_unsupervised_data(size: &TestSize) -> Dataset<f64, ()> {
+pub fn get_linfa_unsupervised_data(size: &TestSize) -> Dataset<f64, (), Ix1> {
     Dataset::from(x_unsupervised(size).to_owned())
 }
 
@@ -44,11 +45,12 @@ pub fn get_linfa_unsupervised_data(size: &TestSize) -> Dataset<f64, ()> {
 /// use smartcore_vs_linfa::{get_linfa_unsupervised_data, linfa_kmeans, TestSize};
 /// linfa_kmeans(&get_linfa_unsupervised_data(&TestSize::Small));
 /// ```
-pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
+pub fn linfa_kmeans(dataset: &Dataset<f64, (), Ix1>) {
     LinfaKMeans::params(5)
         .max_n_iterations(10)
         .n_runs(1)
-        .fit(dataset);
+        .fit(dataset)
+        .unwrap();
 }
 
 /// Run smartcore kmeans
@@ -57,7 +59,8 @@ pub fn linfa_kmeans(dataset: &Dataset<f64, ()>) {
 /// smartcore_kmeans(&get_smartcore_unsupervised_data(&TestSize::Small));
 /// ```
 pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
-    SCKMeans::fit(x, KMeansParameters::default().with_k(5).with_max_iter(10));
+    let params = KMeansParameters::default().with_k(5).with_max_iter(10);
+    SCKMeans::<f64, u32, DenseMatrix<f64>, Vec<u32>>::fit(x, params).unwrap();
 }
 
 /// Run linfa DBSCAN
@@ -66,7 +69,7 @@ pub fn smartcore_kmeans(x: &DenseMatrix<f64>) {
 /// linfa_dbscan(&x_unsupervised(&TestSize::Small));
 /// ```
 pub fn linfa_dbscan(dataset: &Array2<f64>) {
-    LinfaDbscan::params(5).transform(dataset);
+    let _ = LinfaDbscan::params(5).transform(dataset);
 }
 
 /// Run smartcore dbscan
@@ -75,10 +78,8 @@ pub fn linfa_dbscan(dataset: &Array2<f64>) {
 /// smartcore_dbscan(&get_smartcore_unsupervised_data(&TestSize::Small));
 /// ```
 pub fn smartcore_dbscan(x: &DenseMatrix<f64>) {
-    SCDBSCAN::fit(
-        x,
-        DBSCANParameters::default()
-            .with_min_samples(5)
-            .with_eps(1e-4),
-    );
+    let params = DBSCANParameters::default()
+        .with_min_samples(5)
+        .with_eps(1e-4);
+    SCDBSCAN::<f64, i32, DenseMatrix<f64>, Vec<i32>, Euclidian<f64>>::fit(x, params).unwrap();
 }
